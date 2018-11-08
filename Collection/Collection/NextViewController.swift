@@ -15,6 +15,8 @@ class NextViewController: UIViewController {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var textLabel: UITextView!
     @IBOutlet weak var imageView: UIImageView!
+    @IBAction func backButtom(_ sender: Any) {
+    }
     
     
     override func viewDidLoad() {
