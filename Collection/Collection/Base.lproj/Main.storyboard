@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina4_7" orientation="portrait">
+    <device id="ipad9_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -15,28 +15,28 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Collection" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Collection" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WbQ-vf-0iM">
-                                <rect key="frame" x="90" y="38" width="172" height="48"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jAM-kC-C7T">
+                                <rect key="frame" x="363" y="20" width="42" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <searchBar contentMode="redraw" fixedFrame="YES" text="" translatesAutoresizingMaskIntoConstraints="NO" id="JVk-tw-J1I">
-                                <rect key="frame" x="0.0" y="108" width="375" height="56"/>
+                            <searchBar contentMode="redraw" fixedFrame="YES" text="" translatesAutoresizingMaskIntoConstraints="NO" id="XEO-cF-Ie8">
+                                <rect key="frame" x="0.0" y="41" width="768" height="56"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fHa-ky-XoG">
-                                <rect key="frame" x="161" y="180" width="31" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aqN-l3-z1I">
+                                <rect key="frame" x="702" y="97" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="検索"/>
+                                <state key="normal" title="Button"/>
                                 <connections>
-                                    <action selector="search:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2E7-KO-uKs"/>
-                                    <segue destination="zmO-7q-fRF" kind="show" id="vic-G0-HAI"/>
+                                    <action selector="button:" destination="BYZ-38-t0r" eventType="touchUpInside" id="JZF-Ml-aFb"/>
+                                    <segue destination="zmO-7q-fRF" kind="show" id="qEB-oc-KpS"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -45,8 +45,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="Ygn-XY-vEH"/>
                     <connections>
-                        <outlet property="SearchBar" destination="JVk-tw-J1I" id="OT5-hT-Gcg"/>
-                        <outlet property="out" destination="WbQ-vf-0iM" id="n7U-z3-ijY"/>
+                        <outlet property="label" destination="jAM-kC-C7T" id="uk7-rO-o6O"/>
+                        <outlet property="searchBar" destination="XEO-cF-Ie8" id="Ig4-as-Uq4"/>
                         <outlet property="searchDisplayController" destination="VLg-Gp-His" id="a9G-Kf-N7Z"/>
                     </connections>
                 </viewController>
@@ -68,18 +68,18 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="992.79999999999995" y="27.436281859070466"/>
+            <point key="canvasLocation" x="992.1875" y="26.953125"/>
         </scene>
         <!--Next View Controller-->
         <scene sceneID="gST-Sr-so1">
             <objects>
                 <viewController id="zmO-7q-fRF" customClass="NextViewController" customModule="Collection" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8mB-mi-B8n">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="vbL-l3-lDB">
-                                <rect key="frame" x="6" y="94" width="353" height="271"/>
+                                <rect key="frame" x="6" y="94" width="742" height="628"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="P2pB1I0-_400x400.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="yUm-vb-0Nl">
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
@@ -89,13 +89,13 @@
                                         </constraints>
                                     </imageView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="YMv-cl-QpV">
-                                        <rect key="frame" x="58" y="0.0" width="295" height="271"/>
+                                        <rect key="frame" x="58" y="0.0" width="684" height="628"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="211" translatesAutoresizingMaskIntoConstraints="NO" id="SxM-eL-6eh">
-                                                <rect key="frame" x="0.0" y="0.0" width="295" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="684" height="20.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tdu-cf-X1F" userLabel="Name Label">
-                                                        <rect key="frame" x="0.0" y="0.0" width="60" height="20.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="449" height="20.5"/>
                                                         <attributedString key="attributedText">
                                                             <fragment content="User Name">
                                                                 <attributes>
@@ -107,7 +107,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fCW-uW-Ouy" userLabel="Time Label">
-                                                        <rect key="frame" x="271" y="0.0" width="24" height="20.5"/>
+                                                        <rect key="frame" x="660" y="0.0" width="24" height="20.5"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="24" id="RC8-CE-vb9"/>
                                                         </constraints>
@@ -118,7 +118,7 @@
                                                 </subviews>
                                             </stackView>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aGa-XM-4ne" userLabel="Text Label">
-                                                <rect key="frame" x="0.0" y="32.5" width="295" height="92"/>
+                                                <rect key="frame" x="0.0" y="32.5" width="684" height="92"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="92" id="84a-YR-97K"/>
@@ -128,7 +128,7 @@
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             </textView>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Vli-3B-qOY">
-                                                <rect key="frame" x="0.0" y="136.5" width="295" height="134.5"/>
+                                                <rect key="frame" x="0.0" y="136.5" width="684" height="491.5"/>
                                             </imageView>
                                         </subviews>
                                         <constraints>
@@ -142,11 +142,11 @@
                                 </constraints>
                             </stackView>
                             <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HV7-uD-gQU">
-                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="20" width="768" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
                                     <navigationItem title="Title" id="8Zp-WH-IT4">
-                                        <barButtonItem key="leftBarButtonItem" title="戻る" id="QEY-he-M10">
+                                        <barButtonItem key="leftBarButtonItem" title="Back" id="QEY-he-M10">
                                             <connections>
                                                 <action selector="backButtom:" destination="zmO-7q-fRF" id="9Mb-rV-INl"/>
                                                 <segue destination="BYZ-38-t0r" kind="show" id="AM7-rT-TCI"/>
@@ -177,7 +177,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NM0-JM-UX3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1892" y="26.53673163418291"/>
+            <point key="canvasLocation" x="1891.40625" y="26.3671875"/>
         </scene>
     </scenes>
     <resources>
