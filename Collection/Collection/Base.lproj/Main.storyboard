@@ -92,10 +92,10 @@
                                         <rect key="frame" x="58" y="0.0" width="684" height="628"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="211" translatesAutoresizingMaskIntoConstraints="NO" id="SxM-eL-6eh">
-                                                <rect key="frame" x="0.0" y="0.0" width="684" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="330" height="20.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tdu-cf-X1F" userLabel="Name Label">
-                                                        <rect key="frame" x="0.0" y="0.0" width="449" height="20.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="95" height="20.5"/>
                                                         <attributedString key="attributedText">
                                                             <fragment content="User Name">
                                                                 <attributes>
@@ -107,7 +107,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fCW-uW-Ouy" userLabel="Time Label">
-                                                        <rect key="frame" x="660" y="0.0" width="24" height="20.5"/>
+                                                        <rect key="frame" x="306" y="0.0" width="24" height="20.5"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="24" id="RC8-CE-vb9"/>
                                                         </constraints>
@@ -118,7 +118,7 @@
                                                 </subviews>
                                             </stackView>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aGa-XM-4ne" userLabel="Text Label">
-                                                <rect key="frame" x="0.0" y="32.5" width="684" height="92"/>
+                                                <rect key="frame" x="0.0" y="32.5" width="330" height="92"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="92" id="84a-YR-97K"/>
@@ -128,7 +128,7 @@
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             </textView>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Vli-3B-qOY">
-                                                <rect key="frame" x="0.0" y="136.5" width="684" height="491.5"/>
+                                                <rect key="frame" x="0.0" y="136.5" width="330" height="491.5"/>
                                             </imageView>
                                         </subviews>
                                         <constraints>
@@ -149,7 +149,6 @@
                                         <barButtonItem key="leftBarButtonItem" title="Back" id="QEY-he-M10">
                                             <connections>
                                                 <action selector="backButtom:" destination="zmO-7q-fRF" id="9Mb-rV-INl"/>
-                                                <segue destination="BYZ-38-t0r" kind="show" id="AM7-rT-TCI"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>

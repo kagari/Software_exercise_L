@@ -16,6 +16,7 @@ class NextViewController: UIViewController {
     @IBOutlet weak var textLabel: UITextView!
     @IBOutlet weak var imageView: UIImageView!
     @IBAction func backButtom(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
     }
     
     
