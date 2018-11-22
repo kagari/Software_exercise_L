@@ -23,6 +23,40 @@ class NextViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        // URLから情報を取得する
+//        let testURL = URL(string: "https://www.pakutaso.com/shared/img/thumb/neko1869IMG_9052_TP_V.jpg")!
+//        _ = URLSession.shared.dataTask(with: testURL) { (data, response, error) in
+//            if error == nil{
+//                let loadedImage = UIImage(data: data!)
+//                self.iconLabel.image = loadedImage
+//            }
+//        }
+        
+        // slackAPIを叩く
+        let url = URL(string: "https://slack.com/api/api.test")!
+        let task = URLSession.shared.dataTask(with: url) {
+            data, response, error in
+            
+            if let error = error {
+                print("クライアントエラー: \(error.localizedDescription) \n")
+                return
+            }
+            
+            guard let data = data, let response = response as? HTTPURLResponse else {
+                print("no data or no response")
+                return
+            }
+            
+            if response.statusCode == 200 {
+                print("-------------------------")
+                let str: String? = String(data: data, encoding: .utf8)
+                print(str)
+                print("-------------------------")
+            } else {
+                print("サーバエラー ステータスコード: \(response.statusCode)\n")
+            }
+        }
+        task.resume()
     }
     
 
