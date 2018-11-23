@@ -31,8 +31,8 @@ class ViewController: UIViewController {
         
         //グラデーションさせるカラーの設定
         //今回は、徐々に色を濃くしていく
-        let color1 = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1).cgColor     //白
-        let color2 = UIColor(red: 120/256.0, green: 150/256.0, blue: 256/256.0, alpha: 1).cgColor   //水色
+        let color1 = UIColor(red: 120/256.0, green: 170/256.0, blue: 126/256.0, alpha: 0.5).cgColor     //白
+        let color2 = UIColor(red: 120/256.0, green: 150/256.0, blue: 256/256.0, alpha: 0.5).cgColor   //水色
         
         //CAGradientLayerにグラデーションさせるカラーをセット
         gradientLayer.colors = [color1, color2]
@@ -47,7 +47,7 @@ class ViewController: UIViewController {
         //gradientLayer.endPoint = CGPoint.init(x: 1 , y:0.5)
         
         //左上が白で右下が水色
-        //gradientLayer.startPoint = CGPoint.init(x: 0, y: 0)
+       // gradientLayer.startPoint = CGPoint.init(x: 0, y: 0)
         //gradientLayer.endPoint = CGPoint.init(x: 1 , y:1)
         
         //ViewControllerのViewレイヤーにグラデーションレイヤーを挿入する
