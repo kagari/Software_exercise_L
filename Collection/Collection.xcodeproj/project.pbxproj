@@ -15,7 +15,6 @@
 		13E058072193E1F90041EAFE /* CollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13E058062193E1F90041EAFE /* CollectionTests.swift */; };
 		13E058122193E1F90041EAFE /* CollectionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13E058112193E1F90041EAFE /* CollectionUITests.swift */; };
 		13E0582421945C180041EAFE /* NextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13E0582321945C180041EAFE /* NextViewController.swift */; };
-		13E0582621947B940041EAFE /* P2pB1I0-_400x400.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 13E0582521947B940041EAFE /* P2pB1I0-_400x400.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,7 +49,6 @@
 		13E058112193E1F90041EAFE /* CollectionUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionUITests.swift; sourceTree = "<group>"; };
 		13E058132193E1F90041EAFE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		13E0582321945C180041EAFE /* NextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextViewController.swift; sourceTree = "<group>"; };
-		13E0582521947B940041EAFE /* P2pB1I0-_400x400.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "P2pB1I0-_400x400.jpg"; path = "../../../../../Downloads/P2pB1I0-_400x400.jpg"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,11 +99,10 @@
 		13E057F02193E1F60041EAFE /* Collection */ = {
 			isa = PBXGroup;
 			children = (
-				13E0582521947B940041EAFE /* P2pB1I0-_400x400.jpg */,
+				13E057F52193E1F60041EAFE /* Main.storyboard */,
 				13E057F12193E1F60041EAFE /* AppDelegate.swift */,
 				13E057F32193E1F60041EAFE /* ViewController.swift */,
 				13E0582321945C180041EAFE /* NextViewController.swift */,
-				13E057F52193E1F60041EAFE /* Main.storyboard */,
 				13E057F82193E1F90041EAFE /* Assets.xcassets */,
 				13E057FA2193E1F90041EAFE /* LaunchScreen.storyboard */,
 				13E057FD2193E1F90041EAFE /* Info.plist */,
@@ -236,7 +233,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				13E057FC2193E1F90041EAFE /* LaunchScreen.storyboard in Resources */,
-				13E0582621947B940041EAFE /* P2pB1I0-_400x400.jpg in Resources */,
 				13E057F92193E1F90041EAFE /* Assets.xcassets in Resources */,
 				13E057F72193E1F60041EAFE /* Main.storyboard in Resources */,
 			);
@@ -443,6 +439,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Collection/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -462,6 +459,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Collection/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
