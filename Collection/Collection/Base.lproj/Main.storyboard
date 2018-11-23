@@ -188,7 +188,6 @@
         <!--View Controller-->
         <scene sceneID="Vb7-CU-0Kl">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="LLj-Kz-AFg" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="gl3-Ib-abp" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="0pQ-fM-UbG">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
@@ -197,6 +196,7 @@
                         <viewLayoutGuide key="safeArea" id="34w-qW-R9Y"/>
                     </view>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LLj-Kz-AFg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
         </scene>
     </scenes>
