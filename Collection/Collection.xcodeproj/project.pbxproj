@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		139FE6B821A7BF1B00C4B7C9 /* OAuthCertification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 139FE6B721A7BF1B00C4B7C9 /* OAuthCertification.swift */; };
 		13E057F22193E1F60041EAFE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13E057F12193E1F60041EAFE /* AppDelegate.swift */; };
 		13E057F42193E1F60041EAFE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13E057F32193E1F60041EAFE /* ViewController.swift */; };
 		13E057F72193E1F60041EAFE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 13E057F52193E1F60041EAFE /* Main.storyboard */; };
@@ -36,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		139FE6B721A7BF1B00C4B7C9 /* OAuthCertification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthCertification.swift; sourceTree = "<group>"; };
 		13E057EE2193E1F60041EAFE /* Collection.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Collection.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13E057F12193E1F60041EAFE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		13E057F32193E1F60041EAFE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 				13E057F12193E1F60041EAFE /* AppDelegate.swift */,
 				13E057F32193E1F60041EAFE /* ViewController.swift */,
 				13E0582321945C180041EAFE /* NextViewController.swift */,
+				139FE6B721A7BF1B00C4B7C9 /* OAuthCertification.swift */,
 				13E057F52193E1F60041EAFE /* Main.storyboard */,
 				13E057F82193E1F90041EAFE /* Assets.xcassets */,
 				13E057FA2193E1F90041EAFE /* LaunchScreen.storyboard */,
@@ -263,6 +266,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				139FE6B821A7BF1B00C4B7C9 /* OAuthCertification.swift in Sources */,
 				13E057F42193E1F60041EAFE /* ViewController.swift in Sources */,
 				13E0582421945C180041EAFE /* NextViewController.swift in Sources */,
 				13E057F22193E1F60041EAFE /* AppDelegate.swift in Sources */,

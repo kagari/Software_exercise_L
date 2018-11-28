@@ -10,48 +10,25 @@ import UIKit
 
 class ViewController: UIViewController {
     
+//    let query: String
+//    let responseData: String
+//    let searchApiUrl: String
+//    let searchMode: intmax_t
+    var str: String!
     @IBOutlet weak var label: UILabel!
-    
     @IBOutlet weak var searchBar: UISearchBar!
-    
     @IBAction func button(_ sender: Any) {
         if (searchBar.text == ""){
             let alert = UIAlertController(title: "検索文字が入力されていません", message: "入力してください", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             self.present(alert, animated: true)
         }else{
-            print(searchBar.text!)
-            // slackAPIを叩く
-            let url = URL(string: "https://slack.com/api/api.test")!
-            let task = URLSession.shared.dataTask(with: url) {
-                data, response, error in
-                
-                if let error = error {
-                    print("クライアントエラー: \(error.localizedDescription) \n")
-                    return
-                }
-                
-                guard let data = data, let response = response as? HTTPURLResponse else {
-                    print("no data or no response")
-                    return
-                }
-                
-                if response.statusCode == 200 {
-                    print("-------------------------")
-                    let str: String! = String(data: data, encoding: .utf8)
-                    print(str)
-                    print("-------------------------")
-                } else {
-                    print("サーバエラー ステータスコード: \(response.statusCode)\n")
-                }
-            }
-            task.resume()
+            goToNextPage(message: searchBar.text!)
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Hello, World")
         
         // labelがこのアプリの名前を表している
         label.text = "Collection"
@@ -70,5 +47,13 @@ class ViewController: UIViewController {
 //            let NextViewController = storyboard.instantiateViewController(withIdentifier: "Next")
 //            self.present(NextViewController, animated: true, completion: nil)
 //        }
+    }
+    
+    // 次のページに移る際にjsonを次のページに送る
+    func goToNextPage(message: String){
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.message = message
+        let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "nextViewController")
+        present(nextViewController!, animated: false, completion: nil)
     }
 }
