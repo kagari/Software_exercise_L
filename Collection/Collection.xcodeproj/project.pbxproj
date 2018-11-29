@@ -76,6 +76,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1300CBEC21AFA87900DEC828 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		13E057E52193E1F60041EAFE = {
 			isa = PBXGroup;
 			children = (
@@ -83,6 +90,7 @@
 				13E058052193E1F90041EAFE /* CollectionTests */,
 				13E058102193E1F90041EAFE /* CollectionUITests */,
 				13E057EF2193E1F60041EAFE /* Products */,
+				1300CBEC21AFA87900DEC828 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -99,10 +107,10 @@
 		13E057F02193E1F60041EAFE /* Collection */ = {
 			isa = PBXGroup;
 			children = (
-				13E057F52193E1F60041EAFE /* Main.storyboard */,
 				13E057F12193E1F60041EAFE /* AppDelegate.swift */,
 				13E057F32193E1F60041EAFE /* ViewController.swift */,
 				13E0582321945C180041EAFE /* NextViewController.swift */,
+				13E057F52193E1F60041EAFE /* Main.storyboard */,
 				13E057F82193E1F90041EAFE /* Assets.xcassets */,
 				13E057FA2193E1F90041EAFE /* LaunchScreen.storyboard */,
 				13E057FD2193E1F90041EAFE /* Info.plist */,
