@@ -50,7 +50,7 @@ class NextViewController: UIViewController {
             if response.statusCode == 200 {
                 print("-------------------------")
                 let str: String? = String(data: data, encoding: .utf8)
-                print(str)
+                print(str as Any)
                 print("-------------------------")
             } else {
                 print("サーバエラー ステータスコード: \(response.statusCode)\n")
