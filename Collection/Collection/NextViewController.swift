@@ -110,7 +110,7 @@ class NextViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     // トークン取得のための関数
     func getToken() -> String {
-        let token: String = "xxxxxxxxxxxxx"
+        let token: String = "xxxxxxxxxxxxxxx"
         return token
     }
     

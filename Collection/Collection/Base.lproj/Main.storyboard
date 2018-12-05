@@ -92,9 +92,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HV7-uD-gQU">
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HV7-uD-gQU">
                                 <rect key="frame" x="0.0" y="20" width="768" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="hp0-gJ-dsh"/>
+                                </constraints>
                                 <items>
                                     <navigationItem title="Title" id="8Zp-WH-IT4">
                                         <barButtonItem key="leftBarButtonItem" title="Back" id="QEY-he-M10">
@@ -105,9 +107,8 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="VSd-av-CL3">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="VSd-av-CL3">
                                 <rect key="frame" x="0.0" y="64" width="768" height="960"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="HZU-B0-F3y">
@@ -126,6 +127,15 @@
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="HV7-uD-gQU" firstAttribute="leading" secondItem="VSd-av-CL3" secondAttribute="leading" id="9Xe-Tj-w03"/>
+                            <constraint firstItem="HV7-uD-gQU" firstAttribute="top" secondItem="Xdh-83-dZj" secondAttribute="top" id="Cq1-ps-efW"/>
+                            <constraint firstItem="VSd-av-CL3" firstAttribute="bottom" secondItem="Xdh-83-dZj" secondAttribute="bottom" id="Gc9-P1-aZL"/>
+                            <constraint firstItem="VSd-av-CL3" firstAttribute="trailing" secondItem="Xdh-83-dZj" secondAttribute="trailing" id="NV9-8c-ORY"/>
+                            <constraint firstItem="HV7-uD-gQU" firstAttribute="trailing" secondItem="VSd-av-CL3" secondAttribute="trailing" id="VKt-Gn-0yS"/>
+                            <constraint firstItem="VSd-av-CL3" firstAttribute="leading" secondItem="Xdh-83-dZj" secondAttribute="leading" id="edN-xi-anf"/>
+                            <constraint firstItem="VSd-av-CL3" firstAttribute="top" secondItem="HV7-uD-gQU" secondAttribute="bottom" id="hsX-8k-jh8"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="Xdh-83-dZj"/>
                     </view>
                     <navigationItem key="navigationItem" id="pdQ-Qf-May"/>
