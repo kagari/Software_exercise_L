@@ -24,15 +24,12 @@ class NextViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-//        print(appDelegate.message!)
-        // Do any additional setup after loading the view.
         
         // tokenを取得する
         let token = getToken()
         // 検索ワード
         let query = appDelegate.message!
-//        print("token: \(token)")
-//        print("query: \(query)")
+        // 検索を行う
         var url_text: String! = "https://slack.com/api/search.all?token=\(token)&query=\(query)"
         url_text = url_text.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)
         let url = URL(string: url_text)!
@@ -71,7 +68,7 @@ class NextViewController: UIViewController {
                             // mainthreaddで実行(これを書かないと怒られる)
                             DispatchQueue.main.async() { () -> Void in
                                 self.textLabel.text = texts["text"]! as Any as? String
-                            }
+                                self.nameLabel.text = texts["username"]! as Any as? String                            }
                         }
 //                        for matches in apiMessage["matches"] as! [String: Any] {
 //                            print(matches)
@@ -83,6 +80,21 @@ class NextViewController: UIViewController {
             }
         }
         task.resume()
+        gradation_color()
+    }
+    
+    func getToken() -> String {
+        let token: String = "xxxxxxxxxxxxxxxxx"
+        return token
+    }
+    
+    func setText(_ responseData: String){
+        pretext = responseData
+        print(pretext)
+    }
+    
+    // グラデーションを付けるメソッドを用意
+    func gradation_color() {
         //グラデーションをつける
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = self.view.bounds
@@ -102,26 +114,4 @@ class NextViewController: UIViewController {
         self.view.layer.insertSublayer(gradientLayer,at:0)
     }
     
-    func getToken() -> String {
-        let token: String = "xxxxxxxxxxxxxxx"
-        return token
-    }
-    
-    func setText(_ responseData: String){
-        pretext = responseData
-        print(pretext)
-    }
-    
-    
-
-    /*
-    // MARK: - Navigation A
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
