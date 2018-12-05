@@ -8,14 +8,19 @@
 
 import UIKit
 
-class NextViewController: UIViewController {
-
+class NextViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    // 検索結果を格納するための空の配列を用意
+    // 値を格納するたびにテーブルをリロードする
+    var resultDatas = [Dictionary<String, Any>]() {
+        didSet {
+            tableView.reloadData()
+        }
+    }
+    
     var pretext: String!
-    @IBOutlet weak var iconLabel: UIImageView!
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var timeLabel: UILabel!
-    @IBOutlet weak var textLabel: UITextView!
-    @IBOutlet weak var imageView: UIImageView!
+    
+    @IBOutlet weak var tableView: UITableView!
     @IBAction func backButtom(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
@@ -23,18 +28,20 @@ class NextViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // 検索クエリを橋渡しするためのappDelegateのインスタンスを作成
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         
         // tokenを取得する
         let token = getToken()
         // 検索ワード
         let query = appDelegate.message!
+        
         // 検索を行う
         var url_text: String! = "https://slack.com/api/search.all?token=\(token)&query=\(query)"
         url_text = url_text.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)
         let url = URL(string: url_text)!
         // slackAPIを叩く
-//        print("----------------------\n" + url.absoluteString + "\n-----------------------")
         let task = URLSession.shared.dataTask(with: url) {
             data, response, error in
             
@@ -50,9 +57,7 @@ class NextViewController: UIViewController {
             
             if response.statusCode == 200 {
                 let str = String(data: data, encoding: .utf8)
-//                print("-------------------------")
-//                print(str!)
-//                print("-------------------------")
+
                 guard let result = str?.data(using: .utf8) else {return}
                 do {
                     let json = try? JSONSerialization.jsonObject(with: result)
@@ -67,12 +72,13 @@ class NextViewController: UIViewController {
                             print(texts["text"]! as Any)
                             // mainthreaddで実行(これを書かないと怒られる)
                             DispatchQueue.main.async() { () -> Void in
-                                self.textLabel.text = texts["text"]! as Any as? String
-                                self.nameLabel.text = texts["username"]! as Any as? String                            }
+                                var responseData = [String: Any]()
+                                responseData["username"] = texts["username"]! as Any as? String
+                                responseData["text"] = texts["text"]! as Any as? String
+                                responseData["permalink"] = texts["permalink"]! as Any as? URL
+                                self.resultDatas.append(responseData)
+                            }
                         }
-//                        for matches in apiMessage["matches"] as! [String: Any] {
-//                            print(matches)
-//                        }
                     }
                 }
             } else {
@@ -81,10 +87,30 @@ class NextViewController: UIViewController {
         }
         task.resume()
         gradation_color()
+        
+        // セルをテーブルに紐付ける
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        // データのないセルを表示しないようにするハック
+        tableView.tableFooterView = UIView(frame: .zero)
     }
     
+    // セルの個数を指定するデリゲートメソッド
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return resultDatas.count
+    }
+    
+    // セルに値を設定するデータソースメソッド
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // セルを取得する
+        let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        // セルに表示する値を設定する
+        cell.textLabel!.text = resultDatas[indexPath.row]["text"] as? String
+        return cell
+    }
+    
+    // トークン取得のための関数
     func getToken() -> String {
-        let token: String = "xxxxxxxxxxxxxxxxx"
+        let token: String = "xxxxxxxxxxxxx"
         return token
     }
     
