@@ -8,14 +8,17 @@
 
 import UIKit
 
-class NextViewController: UIViewController {
-
-    var pretext: String!
-    @IBOutlet weak var iconLabel: UIImageView!
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var timeLabel: UILabel!
-    @IBOutlet weak var textLabel: UITextView!
-    @IBOutlet weak var imageView: UIImageView!
+class NextViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    // 検索結果を格納するための空の配列を用意
+    // 値を格納するたびにテーブルをリロードする
+    var resultDatas = [Dictionary<String, Any>]() {
+        didSet {
+            tableView.reloadData()
+        }
+    }
+    
+    @IBOutlet weak var tableView: UITableView!
     @IBAction func backButtom(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
@@ -23,18 +26,20 @@ class NextViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // 検索クエリを橋渡しするためのappDelegateのインスタンスを作成
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         
         // tokenを取得する
         let token = getToken()
         // 検索ワード
         let query = appDelegate.message!
+        
         // 検索を行う
         var url_text: String! = "https://slack.com/api/search.all?token=\(token)&query=\(query)"
         url_text = url_text.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)
         let url = URL(string: url_text)!
         // slackAPIを叩く
-//        print("----------------------\n" + url.absoluteString + "\n-----------------------")
         let task = URLSession.shared.dataTask(with: url) {
             data, response, error in
             
@@ -50,29 +55,39 @@ class NextViewController: UIViewController {
             
             if response.statusCode == 200 {
                 let str = String(data: data, encoding: .utf8)
-//                print("-------------------------")
-//                print(str!)
-//                print("-------------------------")
+
                 guard let result = str?.data(using: .utf8) else {return}
                 do {
                     let json = try? JSONSerialization.jsonObject(with: result)
-//                    print(json as Any)
                     if let dictionary = json as? [String: Any]{
-                        let apiMessage = dictionary["messages"] as! [String: Any]
-//                        print(apiMessage)
-                        let matches = apiMessage["matches"] as! [Any]
-                        for matche in matches {
-                            let texts = matche as! [String: Any]
-                            print("----------------------------")
-                            print(texts["text"]! as Any)
-                            // mainthreaddで実行(これを書かないと怒られる)
-                            DispatchQueue.main.async() { () -> Void in
-                                self.textLabel.text = texts["text"]! as Any as? String
-                                self.nameLabel.text = texts["username"]! as Any as? String                            }
+                        // 正常にSlackAPIを使って情報を取れたか判断
+                        if dictionary["ok"] as! Bool {
+                            let apiMessage = dictionary["messages"] as! [String: Any]
+                            let matches = apiMessage["matches"] as! [Any]
+                            // 返ってきた結果(検索結果)が空かどうか判定
+                            // 空だった場合アラートを出す
+                            if matches.isEmpty {
+                                let alert = UIAlertController(title: "検索結果がありませんでした", message: "別の検索ワードで試してみてください", preferredStyle: .alert)
+                                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                                self.present(alert, animated: true)
+                            }
+                            for matche in matches {
+                                let texts = matche as! [String: Any]
+                                // mainthreaddで実行(これを書かないと怒られる)
+                                DispatchQueue.main.async() { () -> Void in
+                                    var responseData = [String: Any]()
+                                    responseData["username"] = texts["username"]! as? String
+                                    responseData["text"] = texts["text"]! as? String
+                                    responseData["permalink"] = texts["permalink"]! as? URL
+                                    self.resultDatas.append(responseData)
+                                }
+                            }
+                        }else{
+                            // SlackAPIがうまく使えていない場合、アラートを出す
+                            let alert = UIAlertController(title: "Slackとの連携が行われていません", message: "連携を確認してもう一度お試しください", preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                            self.present(alert, animated: true)
                         }
-//                        for matches in apiMessage["matches"] as! [String: Any] {
-//                            print(matches)
-//                        }
                     }
                 }
             } else {
@@ -81,16 +96,41 @@ class NextViewController: UIViewController {
         }
         task.resume()
         gradation_color()
+        
+        // データのないセルを表示しないようにする
+        tableView.tableFooterView = UIView(frame: .zero)
     }
     
+    // セルの個数を指定するデリゲートメソッド
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return resultDatas.count
+    }
+    
+    // セルに値を設定するデータソースメソッド
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // セルを取得する
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TextCell
+        // セルに表示する値を設定する
+        cell.userNameLabel.text = resultDatas[indexPath.row]["username"] as? String
+        cell.responseLabel.text = resultDatas[indexPath.row]["text"] as? String
+        return cell
+    }
+    
+    // セルの高さ指定をする処理
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        // UITableViewCellの高さを自動で取得する値
+        return UITableView.automaticDimension
+    }
+    
+    // セルタップ時の挙動
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(indexPath)
+    }
+    
+    // トークン取得のための関数
     func getToken() -> String {
-        let token: String = "xxxxxxxxxxxxxxxxx"
+        let token: String = "xxxxxxxxxxx"
         return token
-    }
-    
-    func setText(_ responseData: String){
-        pretext = responseData
-        print(pretext)
     }
     
     // グラデーションを付けるメソッドを用意
