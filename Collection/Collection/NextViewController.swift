@@ -60,18 +60,33 @@ class NextViewController: UIViewController, UITableViewDelegate, UITableViewData
                 do {
                     let json = try? JSONSerialization.jsonObject(with: result)
                     if let dictionary = json as? [String: Any]{
-                        let apiMessage = dictionary["messages"] as! [String: Any]
-                        let matches = apiMessage["matches"] as! [Any]
-                        for matche in matches {
-                            let texts = matche as! [String: Any]
-                            // mainthreaddで実行(これを書かないと怒られる)
-                            DispatchQueue.main.async() { () -> Void in
-                                var responseData = [String: Any]()
-                                responseData["username"] = texts["username"]! as? String
-                                responseData["text"] = texts["text"]! as? String
-                                responseData["permalink"] = texts["permalink"]! as? URL
-                                self.resultDatas.append(responseData)
+                        // 正常にSlackAPIを使って情報を取れたか判断
+                        if dictionary["ok"] as! Bool {
+                            let apiMessage = dictionary["messages"] as! [String: Any]
+                            let matches = apiMessage["matches"] as! [Any]
+                            // 返ってきた結果(検索結果)が空かどうか判定
+                            // 空だった場合アラートを出す
+                            if matches.isEmpty {
+                                let alert = UIAlertController(title: "検索結果がありませんでした", message: "別の検索ワードで試してみてください", preferredStyle: .alert)
+                                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                                self.present(alert, animated: true)
                             }
+                            for matche in matches {
+                                let texts = matche as! [String: Any]
+                                // mainthreaddで実行(これを書かないと怒られる)
+                                DispatchQueue.main.async() { () -> Void in
+                                    var responseData = [String: Any]()
+                                    responseData["username"] = texts["username"]! as? String
+                                    responseData["text"] = texts["text"]! as? String
+                                    responseData["permalink"] = texts["permalink"]! as? URL
+                                    self.resultDatas.append(responseData)
+                                }
+                            }
+                        }else{
+                            // SlackAPIがうまく使えていない場合、アラートを出す
+                            let alert = UIAlertController(title: "Slackとの連携が行われていません", message: "連携を確認してもう一度お試しください", preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                            self.present(alert, animated: true)
                         }
                     }
                 }
@@ -82,10 +97,7 @@ class NextViewController: UIViewController, UITableViewDelegate, UITableViewData
         task.resume()
         gradation_color()
         
-        // セルをテーブルに紐付ける
-        // なぜかTextCellの値にnilが動かなくなるのでコメントアウト
-//        tableView.register(TextCell.self, forCellReuseIdentifier: "cell")
-        // データのないセルを表示しないようにするハック
+        // データのないセルを表示しないようにする
         tableView.tableFooterView = UIView(frame: .zero)
     }
     
@@ -110,9 +122,14 @@ class NextViewController: UIViewController, UITableViewDelegate, UITableViewData
         return UITableView.automaticDimension
     }
     
+    // セルタップ時の挙動
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(indexPath)
+    }
+    
     // トークン取得のための関数
     func getToken() -> String {
-        let token: String = "xxxxxxxxxxxxxxx"
+        let token: String = "xxxxxxxxxxx"
         return token
     }
     
