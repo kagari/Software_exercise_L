@@ -18,8 +18,6 @@ class NextViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    var pretext: String!
-    
     @IBOutlet weak var tableView: UITableView!
     @IBAction func backButtom(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
@@ -61,21 +59,17 @@ class NextViewController: UIViewController, UITableViewDelegate, UITableViewData
                 guard let result = str?.data(using: .utf8) else {return}
                 do {
                     let json = try? JSONSerialization.jsonObject(with: result)
-//                    print(json as Any)
                     if let dictionary = json as? [String: Any]{
                         let apiMessage = dictionary["messages"] as! [String: Any]
-//                        print(apiMessage)
                         let matches = apiMessage["matches"] as! [Any]
                         for matche in matches {
                             let texts = matche as! [String: Any]
-                            print("----------------------------")
-                            print(texts["text"]! as Any)
                             // mainthreaddで実行(これを書かないと怒られる)
                             DispatchQueue.main.async() { () -> Void in
                                 var responseData = [String: Any]()
-                                responseData["username"] = texts["username"]! as Any as? String
-                                responseData["text"] = texts["text"]! as Any as? String
-                                responseData["permalink"] = texts["permalink"]! as Any as? URL
+                                responseData["username"] = texts["username"]! as? String
+                                responseData["text"] = texts["text"]! as? String
+                                responseData["permalink"] = texts["permalink"]! as? URL
                                 self.resultDatas.append(responseData)
                             }
                         }
@@ -89,7 +83,8 @@ class NextViewController: UIViewController, UITableViewDelegate, UITableViewData
         gradation_color()
         
         // セルをテーブルに紐付ける
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        // なぜかTextCellの値にnilが動かなくなるのでコメントアウト
+//        tableView.register(TextCell.self, forCellReuseIdentifier: "cell")
         // データのないセルを表示しないようにするハック
         tableView.tableFooterView = UIView(frame: .zero)
     }
@@ -102,21 +97,23 @@ class NextViewController: UIViewController, UITableViewDelegate, UITableViewData
     // セルに値を設定するデータソースメソッド
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // セルを取得する
-        let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TextCell
         // セルに表示する値を設定する
-        cell.textLabel!.text = resultDatas[indexPath.row]["text"] as? String
+        cell.userNameLabel.text = resultDatas[indexPath.row]["username"] as? String
+        cell.responseLabel.text = resultDatas[indexPath.row]["text"] as? String
         return cell
+    }
+    
+    // セルの高さ指定をする処理
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        // UITableViewCellの高さを自動で取得する値
+        return UITableView.automaticDimension
     }
     
     // トークン取得のための関数
     func getToken() -> String {
         let token: String = "xxxxxxxxxxxxxxx"
         return token
-    }
-    
-    func setText(_ responseData: String){
-        pretext = responseData
-        print(pretext)
     }
     
     // グラデーションを付けるメソッドを用意
