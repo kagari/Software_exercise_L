@@ -8,12 +8,19 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController{
     
 //    let query: String
 //    let responseData: String
 //    let searchApiUrl: String
 //    let searchMode: intmax_t
+    
+    let userDefaults = UserDefaults.standard
+    
+    @IBOutlet var tableView: UITableView!
+    let statusBarHeight = UIApplication.shared.statusBarFrame.height
+    var textFieldHeight: CGFloat = 40
+    
     var str: String!
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -23,13 +30,15 @@ class ViewController: UIViewController {
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             self.present(alert, animated: true)
         }else{
+            tableView.removeFromSuperview()
+            addHistory(text: searchBar.text!)
             goToNextPage(message: searchBar.text!)
+            
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         // labelがこのアプリの名前を表している
         label.text = "Collection"
         label.sizeToFit()
@@ -39,14 +48,9 @@ class ViewController: UIViewController {
         
         // searchBarはその名の通り検索窓
         searchBar.placeholder = "キーワード検索" // デフォルトで表示される文字列を指定
-        
-        // enterキーを押した時に画面遷移させるために書いた
-        // TODO: enter keyを押した時にどうにか画面遷移させる
-//        if searchBar.isSearchResultsButtonSelected {
-//            let storyboard: UIStoryboard = UIStoryboard(name: "Next", bundle: nil)
-//            let NextViewController = storyboard.instantiateViewController(withIdentifier: "Next")
-//            self.present(NextViewController, animated: true, completion: nil)
-//        }
+        searchBar.showsSearchResultsButton = true // 検索ボタンを追加
+        searchBar.showsCancelButton = false // キャンセルボタンを表示しない
+        searchBar.delegate = self as? UISearchBarDelegate
         
         //グラデーションをつける
         let gradientLayer = CAGradientLayer()
@@ -84,4 +88,157 @@ class ViewController: UIViewController {
         let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "nextViewController")
         present(nextViewController!, animated: false, completion: nil)
     }
+    
+    
+    
+    // 新しく履歴に追加
+    func addHistory(text: String) {
+        
+        if text == "" {
+            return
+        }
+        
+        var histories = getInputHistory()
+        
+        for word in histories {
+            if word == text {
+                // すでに履歴にある場合は追加しない
+                return
+            }
+        }
+        
+        histories.insert(text, at: 0)
+        userDefaults.set(histories, forKey: "inputHistory")
+    }
+    
+    // 履歴を一つ削除
+    func removeHistory(index: Int) {
+        var histories = getInputHistory()
+        histories.remove(at: index)
+        userDefaults.set(histories, forKey: "inputHistory")
+    }
+    
+    // 履歴取得
+    func getInputHistory() -> [String] {
+        if let histories = userDefaults.array(forKey: "inputHistory") as? [String] {
+            return histories
+        }
+        return []
+    }
+    
+    // UITableViewCellから履歴を入力
+    @objc func inputFromHistory(sender: UITapGestureRecognizer) {
+        if let cell = sender.view as? UITableViewCell {
+            searchBar.text = cell.textLabel?.text
+        }
+    }
+    
+    // MARK: - UITextFieldDelegate関連
+    
+//    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+//        textField.resignFirstResponder()
+//
+//
+//
+//        searchBar.text = ""
+//
+//        return true
+//    }
+    
+    
+    // MARK: - UITextFieldDelegate関連
+    
+    /*func searchBarShouldReturn(_ searchBar: UISearchBar) -> Bool {
+        searchBar.resignFirstResponder()
+        tableView.removeFromSuperview()
+        
+        addHistory(text: searchBar.text!)
+        
+        searchBar.text = ""
+        
+        return true
+    }*/
+    
+
+//    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) -> Bool {
+//        print("editing")
+//        searchBar.setShowsCancelButton(true, animated: true)
+//        tableView.removeFromSuperview()
+//        addHistory(text: searchBar.text!)
+//        let topMargin = statusBarHeight + textFieldHeight
+//
+//        tableView = UITableView(frame: CGRect(x: 0, y: topMargin, width: self.view.frame.width, height: self.view.frame.height - topMargin))
+//        tableView.delegate = self as? UITableViewDelegate
+//        tableView.dataSource = self as? UITableViewDataSource
+//        tableView.backgroundColor = UIColor(white: 0, alpha: 0.5)
+//        tableView.allowsSelection = false
+//        self.view.addSubview(tableView)
+//
+//        return true
+//    }
+    
+    // called when search results button pressed
+//    func searchBarResultsListButtonClicked(_ searchBar: UISearchBar) {
+//        print("resut button pushed")
+//        searchBar.resignFirstResponder()
+//        tableView.removeFromSuperview()
+//
+//        addHistory(text: searchBar.text!)
+//
+//        searchBar.text = ""
+//
+//    }
+    
+    //検索ボタン押下時の呼び出しメソッド
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        if(searchBar.text == "") {
+            print("not search querys")
+        } else {
+            print("result")
+        }
+    }
+    
+    // MARK: - UITableView関連
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // テーブルセルの数を設定（必須）
+        return getInputHistory().count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // テーブルセルを作成（必須）
+        
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "Cell")
+        cell.textLabel?.text = getInputHistory()[indexPath.row]
+        cell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.inputFromHistory(sender:))))
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        // テーブルセルの高さを設定
+        return textFieldHeight
+    }
+    
+    func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+        // 左スワイプして出てくる削除ボタンのテキスト
+        return "削除"
+    }
+    
+    private func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCell.EditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        // 左スワイプして出てくる削除ボタンを押した時の処理
+        
+        removeHistory(index: indexPath.row)
+        
+        tableView.deleteRows(at: [indexPath as IndexPath], with: .fade)
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        // すべてのセルを削除可能に
+        return true
+    }
 }
+
+
+
+
