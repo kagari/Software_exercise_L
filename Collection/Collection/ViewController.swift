@@ -9,11 +9,6 @@
 import UIKit
 
 class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
-
-//    let query: String
-//    let responseData: String
-//    let searchApiUrl: String
-//    let searchMode: intmax_t
     
     let userDefaults = UserDefaults.standard
     var tableView: UITableView!
@@ -58,13 +53,12 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        let topMargin = statusBarHeight + textFieldHeight
-        
-        tableView = UITableView(frame: CGRect(x: 0, y: topMargin, width: self.view.frame.width, height: self.view.frame.height - topMargin))
+        tableView = UITableView(frame: CGRect(x: 0, y: self.searchBar.frame.maxY, width: self.view.frame.width, height: CGFloat(getInputHistory().count) * self.textFieldHeight))
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.backgroundColor = UIColor(white: 0, alpha: 0.5)
         tableView.allowsSelection = false
+        // データのないセルを表示しないようにする
+        tableView.tableFooterView = UIView(frame: .zero)
         self.view.addSubview(tableView)
     }
     
@@ -76,9 +70,9 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // テーブルセルを作成（必須）
-        
         let cell = UITableViewCell(style: .default, reuseIdentifier: "Cell")
         cell.textLabel?.text = getInputHistory()[indexPath.row]
+        // セルタップ時の挙動がセットされている
         cell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.inputFromHistory(sender:))))
         
         return cell
@@ -93,15 +87,16 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate
         // 左スワイプして出てくる削除ボタンのテキスト
         return "削除"
     }
-    
-    private func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCell.EditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         // 左スワイプして出てくる削除ボタンを押した時の処理
-        
-        removeHistory(index: indexPath.row)
-        
-        tableView.deleteRows(at: [indexPath as IndexPath], with: .fade)
+        let swipeCellA = UITableViewRowAction(style: .default, title: "削除") { action, index in
+            self.removeHistory(index: indexPath.row) // 押されたときの動きを定義しています
+            tableView.deleteRows(at: [indexPath as IndexPath], with: .fade)
+        }
+        return [swipeCellA]
     }
-    
+
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // すべてのセルを削除可能に
         return true
