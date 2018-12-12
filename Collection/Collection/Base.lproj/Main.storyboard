@@ -26,34 +26,17 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <searchBar contentMode="redraw" text="" showsSearchResultsButton="YES" showsBookmarkButton="YES" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XEO-cF-Ie8">
-                                <rect key="frame" x="47" y="367" width="674" height="56"/>
+                            <searchBar contentMode="redraw" fixedFrame="YES" text="" showsSearchResultsButton="YES" showsBookmarkButton="YES" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XEO-cF-Ie8">
+                                <rect key="frame" x="0.0" y="20" width="768" height="56"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <offsetWrapper key="searchTextPositionAdjustment" horizontal="0.0" vertical="0.0"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aqN-l3-z1I">
-                                <rect key="frame" x="291" y="453" width="186" height="63"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="63" id="OLc-yz-WxU"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="32"/>
-                                <state key="normal" title="Search"/>
-                                <connections>
-                                    <action selector="button:" destination="BYZ-38-t0r" eventType="touchUpInside" id="JZF-Ml-aFb"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.67806813301515856" green="0.95222973020444834" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="jAM-kC-C7T" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="HhM-BP-Kw0"/>
-                            <constraint firstItem="jAM-kC-C7T" firstAttribute="centerX" secondItem="aqN-l3-z1I" secondAttribute="centerX" id="JnY-pV-wn0"/>
-                            <constraint firstItem="aqN-l3-z1I" firstAttribute="top" secondItem="XEO-cF-Ie8" secondAttribute="bottom" constant="30" id="MO2-TT-Yik"/>
-                            <constraint firstItem="XEO-cF-Ie8" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="47" id="P8n-8o-GxW"/>
                             <constraint firstItem="jAM-kC-C7T" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="216" id="gjP-cN-HSh"/>
-                            <constraint firstItem="aqN-l3-z1I" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="291" id="mni-Gl-qAe"/>
-                            <constraint firstItem="jAM-kC-C7T" firstAttribute="centerX" secondItem="XEO-cF-Ie8" secondAttribute="centerX" id="mrl-ZP-8ro"/>
-                            <constraint firstItem="aqN-l3-z1I" firstAttribute="centerX" secondItem="XEO-cF-Ie8" secondAttribute="centerX" id="pgH-Gv-yuk"/>
-                            <constraint firstItem="XEO-cF-Ie8" firstAttribute="top" secondItem="jAM-kC-C7T" secondAttribute="bottom" constant="22" id="sMe-1c-Hnd"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -82,7 +65,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="1105" y="26"/>
+            <point key="canvasLocation" x="1104.6875" y="25.78125"/>
         </scene>
         <!--Next View Controller-->
         <scene sceneID="gST-Sr-so1">
