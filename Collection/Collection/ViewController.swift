@@ -8,34 +8,21 @@
 
 import UIKit
 
-class ViewController: UIViewController{
-    
+class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
+
 //    let query: String
 //    let responseData: String
 //    let searchApiUrl: String
 //    let searchMode: intmax_t
     
     let userDefaults = UserDefaults.standard
-    
-    @IBOutlet var tableView: UITableView!
+    var tableView: UITableView!
     let statusBarHeight = UIApplication.shared.statusBarFrame.height
     var textFieldHeight: CGFloat = 40
     
     var str: String!
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var searchBar: UISearchBar!
-    @IBAction func button(_ sender: Any) {
-        if (searchBar.text == ""){
-            let alert = UIAlertController(title: "検索文字が入力されていません", message: "入力してください", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            self.present(alert, animated: true)
-        }else{
-            tableView.removeFromSuperview()
-            addHistory(text: searchBar.text!)
-            goToNextPage(message: searchBar.text!)
-            
-        }
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,158 +35,40 @@ class ViewController: UIViewController{
         
         // searchBarはその名の通り検索窓
         searchBar.placeholder = "キーワード検索" // デフォルトで表示される文字列を指定
-        searchBar.showsSearchResultsButton = true // 検索ボタンを追加
-        searchBar.showsCancelButton = false // キャンセルボタンを表示しない
-        searchBar.delegate = self as? UISearchBarDelegate
+        searchBar.delegate = self
         
         //グラデーションをつける
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.frame = self.view.bounds
+        gradationColor()
         
-        //グラデーションさせるカラーの設定
-        //今回は、徐々に色を濃くしていく
-        let color1 = UIColor(red: 120/256.0, green: 170/256.0, blue: 126/256.0, alpha: 0.5).cgColor     //白
-        let color2 = UIColor(red: 120/256.0, green: 150/256.0, blue: 256/256.0, alpha: 0.5).cgColor   //水色
-        
-        //CAGradientLayerにグラデーションさせるカラーをセット
-        gradientLayer.colors = [color1, color2]
-        
-        //グラデーションの開始地点・終了地点の設定
-        //上が白で下が水色
-        gradientLayer.startPoint = CGPoint.init(x: 0.5, y: 0)
-        gradientLayer.endPoint = CGPoint.init(x: 0.5 , y:1 )
-        
-        //左が白で右が水色
-        //gradientLayer.startPoint = CGPoint.init(x: 0, y: 0.5)
-        //gradientLayer.endPoint = CGPoint.init(x: 1 , y:0.5)
-        
-        //左上が白で右下が水色
-       // gradientLayer.startPoint = CGPoint.init(x: 0, y: 0)
-        //gradientLayer.endPoint = CGPoint.init(x: 1 , y:1)
-        
-        //ViewControllerのViewレイヤーにグラデーションレイヤーを挿入する
-        self.view.layer.insertSublayer(gradientLayer,at:0)
     }
     
-    // 次のページに移る際にjsonを次のページに送る
-    func goToNextPage(message: String){
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        appDelegate.message = message
-        let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "nextViewController")
-        present(nextViewController!, animated: false, completion: nil)
-    }
-    
-    
-    
-    // 新しく履歴に追加
-    func addHistory(text: String) {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        self.view.endEditing(true)
         
-        if text == "" {
-            return
-        }
-        
-        var histories = getInputHistory()
-        
-        for word in histories {
-            if word == text {
-                // すでに履歴にある場合は追加しない
-                return
-            }
-        }
-        
-        histories.insert(text, at: 0)
-        userDefaults.set(histories, forKey: "inputHistory")
-    }
-    
-    // 履歴を一つ削除
-    func removeHistory(index: Int) {
-        var histories = getInputHistory()
-        histories.remove(at: index)
-        userDefaults.set(histories, forKey: "inputHistory")
-    }
-    
-    // 履歴取得
-    func getInputHistory() -> [String] {
-        if let histories = userDefaults.array(forKey: "inputHistory") as? [String] {
-            return histories
-        }
-        return []
-    }
-    
-    // UITableViewCellから履歴を入力
-    @objc func inputFromHistory(sender: UITapGestureRecognizer) {
-        if let cell = sender.view as? UITableViewCell {
-            searchBar.text = cell.textLabel?.text
-        }
-    }
-    
-    // MARK: - UITextFieldDelegate関連
-    
-//    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-//        textField.resignFirstResponder()
-//
-//
-//
-//        searchBar.text = ""
-//
-//        return true
-//    }
-    
-    
-    // MARK: - UITextFieldDelegate関連
-    
-    /*func searchBarShouldReturn(_ searchBar: UISearchBar) -> Bool {
-        searchBar.resignFirstResponder()
         tableView.removeFromSuperview()
-        
         addHistory(text: searchBar.text!)
         
-        searchBar.text = ""
-        
-        return true
-    }*/
-    
-
-//    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) -> Bool {
-//        print("editing")
-//        searchBar.setShowsCancelButton(true, animated: true)
-//        tableView.removeFromSuperview()
-//        addHistory(text: searchBar.text!)
-//        let topMargin = statusBarHeight + textFieldHeight
-//
-//        tableView = UITableView(frame: CGRect(x: 0, y: topMargin, width: self.view.frame.width, height: self.view.frame.height - topMargin))
-//        tableView.delegate = self as? UITableViewDelegate
-//        tableView.dataSource = self as? UITableViewDataSource
-//        tableView.backgroundColor = UIColor(white: 0, alpha: 0.5)
-//        tableView.allowsSelection = false
-//        self.view.addSubview(tableView)
-//
-//        return true
-//    }
-    
-    // called when search results button pressed
-//    func searchBarResultsListButtonClicked(_ searchBar: UISearchBar) {
-//        print("resut button pushed")
-//        searchBar.resignFirstResponder()
-//        tableView.removeFromSuperview()
-//
-//        addHistory(text: searchBar.text!)
-//
-//        searchBar.text = ""
-//
-//    }
-    
-    //検索ボタン押下時の呼び出しメソッド
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        if(searchBar.text == "") {
-            print("not search querys")
-        } else {
-            print("result")
+        if (searchBar.text == ""){
+            let alert = UIAlertController(title: "検索文字が入力されていません", message: "入力してください", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true)
+        }else{
+            goToNextPage(message: searchBar.text!)
         }
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        let topMargin = statusBarHeight + textFieldHeight
+        
+        tableView = UITableView(frame: CGRect(x: 0, y: topMargin, width: self.view.frame.width, height: self.view.frame.height - topMargin))
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.backgroundColor = UIColor(white: 0, alpha: 0.5)
+        tableView.allowsSelection = false
+        self.view.addSubview(tableView)
     }
     
     // MARK: - UITableView関連
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // テーブルセルの数を設定（必須）
         return getInputHistory().count
@@ -236,6 +105,82 @@ class ViewController: UIViewController{
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // すべてのセルを削除可能に
         return true
+    }
+    
+    // 新しく履歴に追加
+    func addHistory(text: String) {
+        if text == "" {
+            return
+        }
+        var histories = getInputHistory()
+        for word in histories {
+            if word == text {
+                // すでに履歴にある場合は追加しない
+                return
+            }
+        }
+        histories.insert(text, at: 0)
+        userDefaults.set(histories, forKey: "inputHistory")
+    }
+    
+    // 履歴を一つ削除
+    func removeHistory(index: Int) {
+        var histories = getInputHistory()
+        histories.remove(at: index)
+        userDefaults.set(histories, forKey: "inputHistory")
+    }
+    
+    // 履歴取得
+    func getInputHistory() -> [String] {
+        if let histories = userDefaults.array(forKey: "inputHistory") as? [String] {
+            return histories
+        }
+        return []
+    }
+    
+    // UITableViewCellから履歴を入力
+    @objc func inputFromHistory(sender: UITapGestureRecognizer) {
+        if let cell = sender.view as? UITableViewCell {
+            searchBar.text = cell.textLabel?.text
+        }
+    }
+    
+    // 次のページに移る際にqueryを次のページに送る
+    func goToNextPage(message: String){
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.message = message
+        let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "nextViewController")
+        present(nextViewController!, animated: false, completion: nil)
+    }
+    
+    // グラデーションをつける関数
+    func gradationColor() {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = self.view.bounds
+        
+        //グラデーションさせるカラーの設定
+        //今回は、徐々に色を濃くしていく
+        let color1 = UIColor(red: 120/256.0, green: 170/256.0, blue: 126/256.0, alpha: 0.5).cgColor     //白
+        let color2 = UIColor(red: 120/256.0, green: 150/256.0, blue: 256/256.0, alpha: 0.5).cgColor   //水色
+        
+        //CAGradientLayerにグラデーションさせるカラーをセット
+        gradientLayer.colors = [color1, color2]
+        
+        //グラデーションの開始地点・終了地点の設定
+        //上が白で下が水色
+        gradientLayer.startPoint = CGPoint.init(x: 0.5, y: 0)
+        gradientLayer.endPoint = CGPoint.init(x: 0.5 , y:1 )
+        
+        //左が白で右が水色
+        //gradientLayer.startPoint = CGPoint.init(x: 0, y: 0.5)
+        //gradientLayer.endPoint = CGPoint.init(x: 1 , y:0.5)
+        
+        //左上が白で右下が水色
+        // gradientLayer.startPoint = CGPoint.init(x: 0, y: 0)
+        //gradientLayer.endPoint = CGPoint.init(x: 1 , y:1)
+        
+        //ViewControllerのViewレイヤーにグラデーションレイヤーを挿入する
+        self.view.layer.insertSublayer(gradientLayer,at:0)
     }
 }
 

@@ -31,33 +31,13 @@
                                 <offsetWrapper key="searchTextPositionAdjustment" horizontal="0.0" vertical="0.0"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aqN-l3-z1I">
-                                <rect key="frame" x="291" y="449" width="186" height="63"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="63" id="OLc-yz-WxU"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="32"/>
-                                <state key="normal" title="Search"/>
-                                <connections>
-                                    <action selector="button:" destination="BYZ-38-t0r" eventType="touchUpInside" id="JZF-Ml-aFb"/>
-                                </connections>
-                            </button>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="en6-Hg-LFq">
-                                <rect key="frame" x="47" y="559" width="674" height="314"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </tableView>
                         </subviews>
                         <color key="backgroundColor" red="0.67806813301515856" green="0.95222973020444834" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="jAM-kC-C7T" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="HhM-BP-Kw0"/>
-                            <constraint firstItem="jAM-kC-C7T" firstAttribute="centerX" secondItem="aqN-l3-z1I" secondAttribute="centerX" id="JnY-pV-wn0"/>
-                            <constraint firstItem="aqN-l3-z1I" firstAttribute="top" secondItem="XEO-cF-Ie8" secondAttribute="bottom" constant="30" id="MO2-TT-Yik"/>
                             <constraint firstItem="XEO-cF-Ie8" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="47" id="P8n-8o-GxW"/>
                             <constraint firstItem="jAM-kC-C7T" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="216" id="gjP-cN-HSh"/>
-                            <constraint firstItem="aqN-l3-z1I" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="291" id="mni-Gl-qAe"/>
                             <constraint firstItem="jAM-kC-C7T" firstAttribute="centerX" secondItem="XEO-cF-Ie8" secondAttribute="centerX" id="mrl-ZP-8ro"/>
-                            <constraint firstItem="aqN-l3-z1I" firstAttribute="centerX" secondItem="XEO-cF-Ie8" secondAttribute="centerX" id="pgH-Gv-yuk"/>
                             <constraint firstItem="XEO-cF-Ie8" firstAttribute="top" secondItem="jAM-kC-C7T" secondAttribute="bottom" constant="22" id="sMe-1c-Hnd"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -67,7 +47,6 @@
                         <outlet property="label" destination="jAM-kC-C7T" id="uk7-rO-o6O"/>
                         <outlet property="searchBar" destination="XEO-cF-Ie8" id="Ig4-as-Uq4"/>
                         <outlet property="searchDisplayController" destination="VLg-Gp-His" id="a9G-Kf-N7Z"/>
-                        <outlet property="tableView" destination="en6-Hg-LFq" id="aLU-x4-lr8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -108,7 +87,6 @@
                                         <barButtonItem key="leftBarButtonItem" title="Back" id="QEY-he-M10">
                                             <connections>
                                                 <action selector="backButtom:" destination="zmO-7q-fRF" id="9Mb-rV-INl"/>
-                                                <segue destination="BYZ-38-t0r" kind="show" id="1zH-PT-HNU"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
