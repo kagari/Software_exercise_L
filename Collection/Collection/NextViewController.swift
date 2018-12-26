@@ -8,36 +8,39 @@
 
 import UIKit
 
-class NextViewController: UIViewController {
-
-    var pretext: String!
-    @IBOutlet weak var iconLabel: UIImageView!
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var timeLabel: UILabel!
-    @IBOutlet weak var textLabel: UITextView!
-    @IBOutlet weak var imageView: UIImageView!
+class NextViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    // 検索結果を格納するための空の配列を用意
+    // 値を格納するたびにテーブルをリロードする
+    var resultDatas = [Dictionary<String, Any>]() {
+        didSet {
+            tableView.reloadData()
+        }
+    }
+    
+    @IBOutlet weak var tableView: UITableView!
     @IBAction func backButtom(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
     
+    let userDefaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // 検索クエリを橋渡しするためのappDelegateのインスタンスを作成
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-//        print(appDelegate.message!)
-        // Do any additional setup after loading the view.
         
         // tokenを取得する
         let token = getToken()
         // 検索ワード
         let query = appDelegate.message!
-//        print("token: \(token)")
-//        print("query: \(query)")
+        
+        // 検索を行う
         var url_text: String! = "https://slack.com/api/search.all?token=\(token)&query=\(query)"
         url_text = url_text.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)
         let url = URL(string: url_text)!
         // slackAPIを叩く
-//        print("----------------------\n" + url.absoluteString + "\n-----------------------")
         let task = URLSession.shared.dataTask(with: url) {
             data, response, error in
             
@@ -53,29 +56,39 @@ class NextViewController: UIViewController {
             
             if response.statusCode == 200 {
                 let str = String(data: data, encoding: .utf8)
-//                print("-------------------------")
-//                print(str!)
-//                print("-------------------------")
+
                 guard let result = str?.data(using: .utf8) else {return}
                 do {
                     let json = try? JSONSerialization.jsonObject(with: result)
-//                    print(json as Any)
                     if let dictionary = json as? [String: Any]{
-                        let apiMessage = dictionary["messages"] as! [String: Any]
-//                        print(apiMessage)
-                        let matches = apiMessage["matches"] as! [Any]
-                        for matche in matches {
-                            let texts = matche as! [String: Any]
-                            print("----------------------------")
-                            print(texts["text"]! as Any)
-                            // mainthreaddで実行(これを書かないと怒られる)
-                            DispatchQueue.main.async() { () -> Void in
-                                self.textLabel.text = texts["text"]! as Any as? String
+                        // 正常にSlackAPIを使って情報を取れたか判断
+                        if dictionary["ok"] as! Bool {
+                            let apiMessage = dictionary["messages"] as! [String: Any]
+                            let matches = apiMessage["matches"] as! [Any]
+                            // 返ってきた結果(検索結果)が空かどうか判定
+                            // 空だった場合アラートを出す
+                            if matches.isEmpty {
+                                let alert = UIAlertController(title: "検索結果がありませんでした", message: "別の検索ワードで試してみてください", preferredStyle: .alert)
+                                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                                self.present(alert, animated: true)
                             }
+                            for matche in matches {
+                                let texts = matche as! [String: Any]
+                                // mainthreaddで実行(これを書かないと怒られる)
+                                DispatchQueue.main.async() { () -> Void in
+                                    var responseData = [String: Any]()
+                                    responseData["username"] = texts["username"]! as? String
+                                    responseData["text"] = texts["text"]! as? String
+                                    responseData["permalink"] = texts["permalink"]! as? URL
+                                    self.resultDatas.append(responseData)
+                                }
+                            }
+                        }else{
+                            // SlackAPIがうまく使えていない場合、アラートを出す
+                            let alert = UIAlertController(title: "Slackとの連携が行われていません", message: "連携を確認してもう一度お試しください", preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                            self.present(alert, animated: true)
                         }
-//                        for matches in apiMessage["matches"] as! [String: Any] {
-//                            print(matches)
-//                        }
                     }
                 }
             } else {
@@ -83,6 +96,88 @@ class NextViewController: UIViewController {
             }
         }
         task.resume()
+        
+        // TwitterのAPIを使用して検索を行う
+        let twitterURL = URL(string: "https://api.twitter.com/1.1/tweets/search/fullarchive/prod.json")
+        var twitterURLRequest = URLRequest(url: twitterURL!)
+        twitterURLRequest.httpMethod = "POST"
+        twitterURLRequest.httpBody = "{\"query\" : \"\(query)\"}".data(using: .utf8)
+        if let token = userDefaults.string(forKey: "token"){
+            twitterURLRequest.allHTTPHeaderFields = ["Authorization": "Bearer \(token)", "lang": "ja"]
+        }
+        let twitterTask = URLSession.shared.dataTask(with: twitterURLRequest) {
+            data, response, error in
+            if let error = error {
+                print("クライアントエラー: \(error.localizedDescription) \n")
+                return
+            }
+            guard let data = data, let response = response as? HTTPURLResponse else {
+                print("no data or no response")
+                return
+            }
+            if response.statusCode == 200 {
+                let json = try? JSONSerialization.jsonObject(with: data)
+                if let dictionary = json as? [String: Any]{
+                    let results = dictionary["results"] as! [[String:Any]]
+//                    let texts = results["text"] as! String
+                    for result in results {
+//                        print("Results: \(result)")
+                        DispatchQueue.main.async() { () -> Void in
+                            let userConf = results[0]["user"] as! [String:Any]
+//                            print("@\(userConf["screen_name"]!)")
+                            var responseData = [String: Any]()
+                            responseData["username"] = "@\(userConf["screen_name"]!)"
+                            responseData["text"] = result["text"] as! String
+//                            responseData["permalink"] = result["permalink"] as! URL
+                            self.resultDatas.append(responseData)
+                        }
+                    }
+                }
+            }else{
+                print("サーバエラー ステータスコード: \(response.statusCode)\n")
+            }
+        }
+        twitterTask.resume()
+        gradation_color()
+        
+        // データのないセルを表示しないようにする
+        tableView.tableFooterView = UIView(frame: .zero)
+    }
+    
+    // セルの個数を指定するデリゲートメソッド
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return resultDatas.count
+    }
+    
+    // セルに値を設定するデータソースメソッド
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // セルを取得する
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TextCell
+        // セルに表示する値を設定する
+        cell.userNameLabel.text = resultDatas[indexPath.row]["username"] as? String
+        cell.responseLabel.text = resultDatas[indexPath.row]["text"] as? String
+        return cell
+    }
+    
+    // セルの高さ指定をする処理
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        // UITableViewCellの高さを自動で取得する値
+        return UITableView.automaticDimension
+    }
+    
+    // セルタップ時の挙動
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(indexPath)
+    }
+    
+    // トークン取得のための関数
+    func getToken() -> String {
+        let token: String = "xxxxxxxxxxx"
+        return token
+    }
+    
+    // グラデーションを付けるメソッドを用意
+    func gradation_color() {
         //グラデーションをつける
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = self.view.bounds
@@ -102,26 +197,4 @@ class NextViewController: UIViewController {
         self.view.layer.insertSublayer(gradientLayer,at:0)
     }
     
-    func getToken() -> String {
-        let token: String = "xxxxxxxxxxxxxxx"
-        return token
-    }
-    
-    func setText(_ responseData: String){
-        pretext = responseData
-        print(pretext)
-    }
-    
-    
-
-    /*
-    // MARK: - Navigation A
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
