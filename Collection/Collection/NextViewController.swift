@@ -23,6 +23,7 @@ class NextViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.dismiss(animated: true, completion: nil)
     }
     
+    let userDefaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -95,6 +96,48 @@ class NextViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
         }
         task.resume()
+        
+        // TwitterのAPIを使用して検索を行う
+        let twitterURL = URL(string: "https://api.twitter.com/1.1/tweets/search/fullarchive/prod.json")
+        var twitterURLRequest = URLRequest(url: twitterURL!)
+        twitterURLRequest.httpMethod = "POST"
+        twitterURLRequest.httpBody = "{\"query\" : \"\(query)\"}".data(using: .utf8)
+        if let token = userDefaults.string(forKey: "token"){
+            twitterURLRequest.allHTTPHeaderFields = ["Authorization": "Bearer \(token)", "lang": "ja"]
+        }
+        let twitterTask = URLSession.shared.dataTask(with: twitterURLRequest) {
+            data, response, error in
+            if let error = error {
+                print("クライアントエラー: \(error.localizedDescription) \n")
+                return
+            }
+            guard let data = data, let response = response as? HTTPURLResponse else {
+                print("no data or no response")
+                return
+            }
+            if response.statusCode == 200 {
+                let json = try? JSONSerialization.jsonObject(with: data)
+                if let dictionary = json as? [String: Any]{
+                    let results = dictionary["results"] as! [[String:Any]]
+//                    let texts = results["text"] as! String
+                    for result in results {
+//                        print("Results: \(result)")
+                        DispatchQueue.main.async() { () -> Void in
+                            let userConf = results[0]["user"] as! [String:Any]
+//                            print("@\(userConf["screen_name"]!)")
+                            var responseData = [String: Any]()
+                            responseData["username"] = "@\(userConf["screen_name"]!)"
+                            responseData["text"] = result["text"] as! String
+//                            responseData["permalink"] = result["permalink"] as! URL
+                            self.resultDatas.append(responseData)
+                        }
+                    }
+                }
+            }else{
+                print("サーバエラー ステータスコード: \(response.statusCode)\n")
+            }
+        }
+        twitterTask.resume()
         gradation_color()
         
         // データのないセルを表示しないようにする

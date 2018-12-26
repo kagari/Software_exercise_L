@@ -21,6 +21,46 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // base64でencoding
+        let originalString = "xxxxxxxxxxxxxxxxxxxxxxx"
+        let originalData = originalString.data(using: .utf8)
+        let encodedString = originalData?.base64EncodedString()
+        print(encodedString!)
+
+        let url = URL(string: "https://api.twitter.com/oauth2/token")
+        var urlRequest = URLRequest(url: url!)
+        urlRequest.httpMethod = "POST"
+        urlRequest.allHTTPHeaderFields = ["Authorization": "Basic \(encodedString!)", "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"]
+        urlRequest.httpBody = "grant_type=client_credentials".data(using: .utf8)
+
+        // TwitterのAPI認証をするためにBearerTokenを取得する
+        let task = URLSession.shared.dataTask(with: urlRequest) {
+            data, response, error in
+
+            if let error = error {
+                print("クライアントエラー: \(error.localizedDescription) \n")
+                return
+            }
+
+            guard let data = data, let response = response as? HTTPURLResponse else {
+                print("no data or no response")
+                return
+            }
+
+            if response.statusCode == 200 {
+                let json = try? JSONSerialization.jsonObject(with: data)
+                if let dictionary = json as? [String: Any]{
+                    let token = dictionary["access_token"]
+                    print("Bearer: \(token!)")
+                    self.userDefaults.set(token!, forKey: "token")
+                }
+            } else {
+                print("サーバエラー ステータスコード: \(response.statusCode)\n")
+            }
+        }
+        task.resume()
+        
         // labelがこのアプリの名前を表している
         label.text = "Collection"
         label.sizeToFit()
@@ -178,7 +218,3 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate
         self.view.layer.insertSublayer(gradientLayer,at:0)
     }
 }
-
-
-
-
