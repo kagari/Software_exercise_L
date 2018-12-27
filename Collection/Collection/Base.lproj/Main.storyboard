@@ -13,7 +13,7 @@
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Collection" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" restorationIdentifier="nextViewController" id="8bC-Xf-vdC">
+                    <view key="view" contentMode="scaleToFill" restorationIdentifier="nextViewController" id="8bC-Xf-vdC" customClass="TTTAttributedLabel">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -171,5 +171,4 @@
             <point key="canvasLocation" x="2098.4375" y="25.78125"/>
         </scene>
     </scenes>
-    <color key="tintColor" red="1" green="0.36592798654259351" blue="0.40900783577449817" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
 </document>

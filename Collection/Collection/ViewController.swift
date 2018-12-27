@@ -7,8 +7,10 @@
 //
 
 import UIKit
+import TTTAttributedLabel
+import SafariServices
 
-class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
+class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource,TTTAttributedLabelDelegate,UITextViewDelegate {
     
     let userDefaults = UserDefaults.standard
     var tableView: UITableView!
@@ -18,7 +20,7 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate
     var str: String!
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var searchBar: UISearchBar!
-    
+    @IBOutlet weak var twt: UITextView!
     override func viewDidLoad() {
         super.viewDidLoad()
         
