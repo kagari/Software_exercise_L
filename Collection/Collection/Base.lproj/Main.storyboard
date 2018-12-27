@@ -13,7 +13,7 @@
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Collection" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC" customClass="CheckBox" customModule="Collection" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -30,13 +30,18 @@
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aqN-l3-z1I">
-                                <rect key="frame" x="702" y="97" width="46" height="30"/>
+                                <rect key="frame" x="685" y="126" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <connections>
                                     <action selector="button:" destination="BYZ-38-t0r" eventType="touchUpInside" id="JZF-Ml-aFb"/>
                                     <segue destination="zmO-7q-fRF" kind="show" id="qEB-oc-KpS"/>
                                 </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DLO-qL-3po" customClass="CheckBox" customModule="Collection" customModuleProvider="target">
+                                <rect key="frame" x="111" y="216" width="50" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="off.png"/>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.67806813301515856" green="0.95222973020444834" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -181,6 +186,7 @@
     </scenes>
     <resources>
         <image name="P2pB1I0-_400x400.jpg" width="400" height="400"/>
+        <image name="off.png" width="220" height="226"/>
     </resources>
     <color key="tintColor" red="1" green="0.36592798654259351" blue="0.40900783577449817" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
 </document>

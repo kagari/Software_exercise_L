@@ -9,6 +9,14 @@
 import UIKit
 
 class ViewController: UIViewController  {
+    
+    @IBOutlet var button :UIButton!
+    var count = 0
+    // UIImage のインスタンスを設定
+    let image0:UIImage = UIImage(named:"off")!
+    let image1:UIImage = UIImage(named:"on")!
+    
+
     var tableView: UITableView!
    @IBOutlet weak var label: UILabel!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -78,6 +86,14 @@ class ViewController: UIViewController  {
 */
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let Twitter: Bool = false
+        let Slack: Bool = false
+       
+    }
+    
+   
+        
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
         
@@ -187,4 +203,23 @@ class ViewController: UIViewController  {
         }
         
     }
+// タップすると画像を順番に変える
+@IBAction func buttonTapped(sender : AnyObject) {
+    count += 1
+    
+    if(count%2 == 0){
+        button.setImage(image0, for: .normal)
+    }
+    else if(count%2 == 1){
+        button.setImage(image1, for: .normal)
+    }
+    else if(count%2 == 2){
+        button.setImage(image2, for: .normal)
+    }
+    else if(count%2 == 3){
+        button.setImage(image3, for: .normal)
+    }
+    else{
+    }
+}
 }
