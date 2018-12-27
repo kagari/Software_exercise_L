@@ -7,10 +7,9 @@
 //
 
 import UIKit
-import TTTAttributedLabel
 import SafariServices
 
-class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource,TTTAttributedLabelDelegate,UITextViewDelegate {
+class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource ,UITextViewDelegate {
     
     let userDefaults = UserDefaults.standard
     var tableView: UITableView!

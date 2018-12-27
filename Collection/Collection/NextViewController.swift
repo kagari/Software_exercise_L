@@ -122,14 +122,19 @@ class NextViewController: UIViewController, UITableViewDelegate, UITableViewData
                     let results = dictionary["results"] as! [[String:Any]]
 //                    let texts = results["text"] as! String
                     for result in results {
+                        print("------------------------------------")
+                        print(result)
 //                        print("Results: \(result)")
                         DispatchQueue.main.async() { () -> Void in
-                            let userConf = results[0]["user"] as! [String:Any]
+                            let userConf = result["user"] as! [String:Any]
+//                            let entities = result["entities"] as! [String:Any]
+//                            let urls = entities["urls"] as! [String:Any]
+                            let url = "https://twitter.com/i/web/status/\(result["id"]!)"
 //                            print("@\(userConf["screen_name"]!)")
                             var responseData = [String: Any]()
                             responseData["username"] = "@\(userConf["screen_name"]!)"
                             responseData["text"] = result["text"] as! String
-//                            responseData["permalink"] = result["permalink"] as! URL
+                            responseData["permalink"] = url
                             self.resultDatas.append(responseData)
                         }
                     }
