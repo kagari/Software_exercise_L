@@ -12,21 +12,41 @@ class ViewController: UIViewController  {
     
 
     @IBOutlet weak var button: UIButton!
-    
+    var Twitter: Bool = false
+    var Slack: Bool = false
+    var count1 = 0
     @IBAction func button2(_ sender: Any) {
-        count += 1
-        if(count%2 == 0){
+        count1 += 1
+        if(count1%2 == 0){
             button.setImage(image0, for: .normal)
+            self.Twitter = false
         }
-        else if(count%2 == 1){
+        else if(count1%2 == 1){
             button.setImage(image1, for: .normal)
+            self.Twitter = true
         }
     }
-    var count = 0
     // UIImage のインスタンスを設定
     
-    let image0:UIImage = UIImage(named:"off")!
-    let image1:UIImage = UIImage(named:"on")!
+    @IBOutlet weak var button2: UIButton!
+    var count2 = 0
+    @IBAction func button3(_ sender: Any) {
+        count2 += 1
+        if(count2%2 == 0){
+            button2.setImage(image2, for: .normal)
+            self.Slack = false
+        }
+        else if(count2%2 == 1){
+            button2.setImage(image3, for: .normal)
+            self.Slack = true
+        }
+    }
+    
+    let image0:UIImage = UIImage(named:"Twitter_off")!
+    let image1:UIImage = UIImage(named:"Twitter_on")!
+    
+    let image2:UIImage = UIImage(named:"Slack_off")!
+    let image3:UIImage = UIImage(named:"Slack_on")!
 
     var tableView: UITableView!
    @IBOutlet weak var label: UILabel!
@@ -101,8 +121,7 @@ class ViewController: UIViewController  {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let Twitter: Bool = false
-        let Slack: Bool = false
+        
         
     
    
