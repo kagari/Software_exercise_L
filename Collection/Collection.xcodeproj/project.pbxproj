@@ -19,10 +19,10 @@
 		13E0582421945C180041EAFE /* NextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13E0582321945C180041EAFE /* NextViewController.swift */; };
 		28330B2D4E69994B67259858 /* Pods_CollectionTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C790C9F6E14182A8C61AC9B /* Pods_CollectionTests.framework */; };
 		7A672982248253B297ADB903 /* Pods_CollectionUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB62E97721887C81E34E50D /* Pods_CollectionUITests.framework */; };
-		E44AD88721E704E700EAAD20 /* Twitter_on.png in Resources */ = {isa = PBXBuildFile; fileRef = E44AD88621E704E700EAAD20 /* Twitter_on.png */; };
-		E44AD88921E704F200EAAD20 /* Twitter_off.png in Resources */ = {isa = PBXBuildFile; fileRef = E44AD88821E704F200EAAD20 /* Twitter_off.png */; };
-		E44AD88B21E704F900EAAD20 /* Slack_off.png in Resources */ = {isa = PBXBuildFile; fileRef = E44AD88A21E704F900EAAD20 /* Slack_off.png */; };
-		E44AD88D21E7050B00EAAD20 /* Slack_on.png in Resources */ = {isa = PBXBuildFile; fileRef = E44AD88C21E7050B00EAAD20 /* Slack_on.png */; };
+		E4E72FFE21E719B800A829B8 /* Slack_off.png in Resources */ = {isa = PBXBuildFile; fileRef = E4E72FFD21E719B800A829B8 /* Slack_off.png */; };
+		E4E7300021E719C300A829B8 /* Slack_on.png in Resources */ = {isa = PBXBuildFile; fileRef = E4E72FFF21E719C300A829B8 /* Slack_on.png */; };
+		E4E7300221E719CA00A829B8 /* Twitter_off.png in Resources */ = {isa = PBXBuildFile; fileRef = E4E7300121E719CA00A829B8 /* Twitter_off.png */; };
+		E4E7300421E719CF00A829B8 /* Twitter_on.png in Resources */ = {isa = PBXBuildFile; fileRef = E4E7300321E719CF00A829B8 /* Twitter_on.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,10 +66,10 @@
 		7B2531B18E6FF38974247F86 /* Pods_Collection.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Collection.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C39F6F7A46918C4FDCBB8EB0 /* Pods-CollectionTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CollectionTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CollectionTests/Pods-CollectionTests.debug.xcconfig"; sourceTree = "<group>"; };
 		D3BEF86163A6CB8DF6D84B23 /* Pods-CollectionUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CollectionUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CollectionUITests/Pods-CollectionUITests.release.xcconfig"; sourceTree = "<group>"; };
-		E44AD88621E704E700EAAD20 /* Twitter_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Twitter_on.png; sourceTree = "<group>"; };
-		E44AD88821E704F200EAAD20 /* Twitter_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Twitter_off.png; sourceTree = "<group>"; };
-		E44AD88A21E704F900EAAD20 /* Slack_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Slack_off.png; sourceTree = "<group>"; };
-		E44AD88C21E7050B00EAAD20 /* Slack_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Slack_on.png; sourceTree = "<group>"; };
+		E4E72FFD21E719B800A829B8 /* Slack_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Slack_off.png; sourceTree = "<group>"; };
+		E4E72FFF21E719C300A829B8 /* Slack_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Slack_on.png; sourceTree = "<group>"; };
+		E4E7300121E719CA00A829B8 /* Twitter_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Twitter_off.png; sourceTree = "<group>"; };
+		E4E7300321E719CF00A829B8 /* Twitter_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Twitter_on.png; sourceTree = "<group>"; };
 		FBE2D72B874C1FE99B352A6A /* Pods-CollectionTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CollectionTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CollectionTests/Pods-CollectionTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -141,10 +141,10 @@
 				13E057F52193E1F60041EAFE /* Main.storyboard */,
 				13E057F82193E1F90041EAFE /* Assets.xcassets */,
 				13E057FA2193E1F90041EAFE /* LaunchScreen.storyboard */,
-				E44AD88621E704E700EAAD20 /* Twitter_on.png */,
-				E44AD88821E704F200EAAD20 /* Twitter_off.png */,
-				E44AD88A21E704F900EAAD20 /* Slack_off.png */,
-				E44AD88C21E7050B00EAAD20 /* Slack_on.png */,
+				E4E72FFD21E719B800A829B8 /* Slack_off.png */,
+				E4E7300121E719CA00A829B8 /* Twitter_off.png */,
+				E4E7300321E719CF00A829B8 /* Twitter_on.png */,
+				E4E72FFF21E719C300A829B8 /* Slack_on.png */,
 				13E057FD2193E1F90041EAFE /* Info.plist */,
 			);
 			path = Collection;
@@ -299,13 +299,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E44AD88B21E704F900EAAD20 /* Slack_off.png in Resources */,
-				E44AD88721E704E700EAAD20 /* Twitter_on.png in Resources */,
+				E4E7300421E719CF00A829B8 /* Twitter_on.png in Resources */,
+				E4E72FFE21E719B800A829B8 /* Slack_off.png in Resources */,
 				13E057FC2193E1F90041EAFE /* LaunchScreen.storyboard in Resources */,
-				E44AD88921E704F200EAAD20 /* Twitter_off.png in Resources */,
 				13E057F92193E1F90041EAFE /* Assets.xcassets in Resources */,
+				E4E7300021E719C300A829B8 /* Slack_on.png in Resources */,
 				13E057F72193E1F60041EAFE /* Main.storyboard in Resources */,
-				E44AD88D21E7050B00EAAD20 /* Slack_on.png in Resources */,
+				E4E7300221E719CA00A829B8 /* Twitter_off.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
