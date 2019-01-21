@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import SafariServices
 
-class NextViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class NextViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,UIApplicationDelegate {
     
     // 検索結果を格納するための空の配列を用意
     // 値を格納するたびにテーブルをリロードする
@@ -33,9 +34,12 @@ class NextViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         // tokenを取得する
         let token = getToken()
-        // 検索ワード
+        // 検索ワード{
         let query = appDelegate.message!
         
+        
+        //Slackがonだったら発動
+        if Slack == true{
         // 検索を行う
         var url_text: String! = "https://slack.com/api/search.all?token=\(token)&query=\(query)"
         url_text = url_text.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)
@@ -79,7 +83,7 @@ class NextViewController: UIViewController, UITableViewDelegate, UITableViewData
                                     var responseData = [String: Any]()
                                     responseData["username"] = texts["username"]! as? String
                                     responseData["text"] = texts["text"]! as? String
-                                    responseData["permalink"] = texts["permalink"]! as? URL
+                                    responseData["permalink"] = texts["permalink"]! as? String
                                     self.resultDatas.append(responseData)
                                 }
                             }
@@ -96,8 +100,12 @@ class NextViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
         }
         task.resume()
+        }
+        
         
         // TwitterのAPIを使用して検索を行う
+        // Twitterがonだったら発動
+        if Twitter == true{
         let twitterURL = URL(string: "https://api.twitter.com/1.1/tweets/search/fullarchive/prod.json")
         var twitterURLRequest = URLRequest(url: twitterURL!)
         twitterURLRequest.httpMethod = "POST"
@@ -138,6 +146,8 @@ class NextViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
         }
         twitterTask.resume()
+        }
+        
         gradation_color()
         
         // データのないセルを表示しないようにする
@@ -167,12 +177,16 @@ class NextViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     // セルタップ時の挙動
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(indexPath)
+        //print(indexPath)
+        let pass = indexPath[1]
+        let url = URL(string: self.resultDatas[pass]["permalink"] as! String)
+        let browser = SFSafariViewController(url: url!)
+        present(browser, animated: true, completion: nil)
     }
     
     // トークン取得のための関数
     func getToken() -> String {
-        let token: String = "xxxxxxxxxxx"
+        let token: String = "xxxxxx"
         return token
     }
     
