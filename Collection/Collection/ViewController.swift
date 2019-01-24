@@ -64,7 +64,7 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate
         super.viewDidLoad()
         
         // base64でencoding
-        let originalString = "xxxxxxxxxxxxxxxxxxxxxxx"
+        let originalString = "xxxxx"
         let originalData = originalString.data(using: .utf8)
         let encodedString = originalData?.base64EncodedString()
         print(encodedString!)
