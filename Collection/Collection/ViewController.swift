@@ -7,7 +7,9 @@
 //
 
 import UIKit
-import SafariServices
+//import SafariServices
+import WebKit
+import OAuthSwift
 
 class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource ,UITextViewDelegate {
     
@@ -17,50 +19,97 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate
     var textFieldHeight: CGFloat = 40
     
     var str: String!
+    var oauthswift: OAuth1Swift?
+    
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var searchBar: UISearchBar!
-    @IBOutlet weak var twt: UITextView!
+    @IBAction func connectTwitterButton(_ sender: Any) {
+        // create an instance and retain it
+        let oauthswift = OAuth1Swift(
+            consumerKey:    "xxxxxxxxxxxxxx",
+            consumerSecret: "xxxxxxxxxxxxxx",
+            requestTokenUrl: "https://api.twitter.com/oauth/request_token",
+            authorizeUrl:    "https://api.twitter.com/oauth/authorize",
+            accessTokenUrl:  "https://api.twitter.com/oauth/access_token"
+        )
+        
+        self.oauthswift = oauthswift
+        
+        oauthswift.authorizeURLHandler = SafariURLHandler(viewController: self, oauthSwift: oauthswift)
+        
+        // authorize
+        let handle = oauthswift.authorize(
+            withCallbackURL: URL(string: "https://kagari.github.io/callback/twitter")!,
+            success: { credential, response, parameters in
+//                print(credential.oauthToken)
+//                print(credential.oauthTokenSecret)
+//                print(parameters["user_id"]!)
+                self.testTwitter(oauthswift)
+                // Do your request
+        },
+            failure: { error in
+                print(error.localizedDescription)
+        }
+        )
+    }
+    
+    func testTwitter(_ oauthswift: OAuth1Swift) {
+        let _ = oauthswift.client.get(
+            "https://api.twitter.com/1.1/statuses/mentions_timeline.json", parameters: [:],
+            success: { response in
+                let jsonDict = try? response.jsonObject()
+                print(String(describing: jsonDict))
+        }, failure: { error in
+            print(error)
+        }
+        )
+    }
+
+    @IBAction func connectSlackButton(_ sender: Any) {
+        // Slackの認証
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // base64でencoding
-        let originalString = "xxxxxxxxxxxxxxxxxxxxxxx"
-        let originalData = originalString.data(using: .utf8)
-        let encodedString = originalData?.base64EncodedString()
-        print(encodedString!)
-
-        let url = URL(string: "https://api.twitter.com/oauth2/token")
-        var urlRequest = URLRequest(url: url!)
-        urlRequest.httpMethod = "POST"
-        urlRequest.allHTTPHeaderFields = ["Authorization": "Basic \(encodedString!)", "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"]
-        urlRequest.httpBody = "grant_type=client_credentials".data(using: .utf8)
-
-        // TwitterのAPI認証をするためにBearerTokenを取得する
-        let task = URLSession.shared.dataTask(with: urlRequest) {
-            data, response, error in
-
-            if let error = error {
-                print("クライアントエラー: \(error.localizedDescription) \n")
-                return
-            }
-
-            guard let data = data, let response = response as? HTTPURLResponse else {
-                print("no data or no response")
-                return
-            }
-
-            if response.statusCode == 200 {
-                let json = try? JSONSerialization.jsonObject(with: data)
-                if let dictionary = json as? [String: Any]{
-                    let token = dictionary["access_token"]
-                    print("Bearer: \(token!)")
-                    self.userDefaults.set(token!, forKey: "token")
-                }
-            } else {
-                print("サーバエラー ステータスコード: \(response.statusCode)\n")
-            }
-        }
-        task.resume()
+//        // base64でencoding
+//        let originalString = "xxxxxxxxxxxxxxxxxxxxxxx"
+//        let originalData = originalString.data(using: .utf8)
+//        let encodedString = originalData?.base64EncodedString()
+//        print(encodedString!)
+//
+//        let url = URL(string: "https://api.twitter.com/oauth2/token")
+//        var urlRequest = URLRequest(url: url!)
+//        urlRequest.httpMethod = "POST"
+//        urlRequest.allHTTPHeaderFields = ["Authorization": "Basic \(encodedString!)", "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"]
+//        urlRequest.httpBody = "grant_type=client_credentials".data(using: .utf8)
+//
+//        // TwitterのAPI認証をするためにBearerTokenを取得する
+//        let task = URLSession.shared.dataTask(with: urlRequest) {
+//            data, response, error in
+//
+//            if let error = error {
+//                print("クライアントエラー: \(error.localizedDescription) \n")
+//                return
+//            }
+//
+//            guard let data = data, let response = response as? HTTPURLResponse else {
+//                print("no data or no response")
+//                return
+//            }
+//
+//            if response.statusCode == 200 {
+//                let json = try? JSONSerialization.jsonObject(with: data)
+//                if let dictionary = json as? [String: Any]{
+//                    let token = dictionary["access_token"]
+//                    print("Bearer: \(token!)")
+//                    self.userDefaults.set(token!, forKey: "token")
+//                }
+//            } else {
+//                print("サーバエラー ステータスコード: \(response.statusCode)\n")
+//            }
+//        }
+//        task.resume()
         
         // labelがこのアプリの名前を表している
         label.text = "Collection"
@@ -206,14 +255,6 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate
         //上が白で下が水色
         gradientLayer.startPoint = CGPoint.init(x: 0.5, y: 0)
         gradientLayer.endPoint = CGPoint.init(x: 0.5 , y:1 )
-        
-        //左が白で右が水色
-        //gradientLayer.startPoint = CGPoint.init(x: 0, y: 0.5)
-        //gradientLayer.endPoint = CGPoint.init(x: 1 , y:0.5)
-        
-        //左上が白で右下が水色
-        // gradientLayer.startPoint = CGPoint.init(x: 0, y: 0)
-        //gradientLayer.endPoint = CGPoint.init(x: 1 , y:1)
         
         //ViewControllerのViewレイヤーにグラデーションレイヤーを挿入する
         self.view.layer.insertSublayer(gradientLayer,at:0)
