@@ -7,12 +7,49 @@
 //
 
 import UIKit
-//import SafariServices
 import WebKit
 import OAuthSwift
 
-class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource ,UITextViewDelegate {
+class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource ,UITextViewDelegate, UIApplicationDelegate {
+
+    @IBOutlet weak var button1: UIButton!
+    @IBOutlet weak var button2: UIButton!
+    let image0:UIImage = UIImage(named:"Twitter_off")!
+    let image1:UIImage = UIImage(named:"Twitter_on")!
+    let image2:UIImage = UIImage(named:"Slack_off")!
+    let image3:UIImage = UIImage(named:"Slack_on")!
+//    var Twitter: Bool = false
+//    var Slack: Bool = false
+
     
+    var count1 = 0
+    var count2 = 0
+
+    @IBAction func button1(_ sender: Any) {
+        count1 += 1
+        if(count1%2 == 0){
+            button1.setImage(image0, for: .normal)
+            Twitter = false
+        }
+        else if(count1%2 == 1){
+            button1.setImage(image1, for: .normal)
+            Twitter = true
+        }
+
+    }
+    
+    @IBAction func button2(_ sender: Any) {
+        count2 += 1
+        if(count2%2 == 0){
+            button2.setImage(image2, for: .normal)
+            Slack = false
+        }
+        else if(count2%2 == 1){
+            button2.setImage(image3, for: .normal)
+            Slack = true
+        }
+
+    }
     let userDefaults = UserDefaults.standard
     var tableView: UITableView!
     let statusBarHeight = UIApplication.shared.statusBarFrame.height
@@ -26,8 +63,8 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate
     @IBAction func connectTwitterButton(_ sender: Any) {
         // create an instance and retain it
         let oauthswift = OAuth1Swift(
-            consumerKey:    "xxxxxxxxxxxxxx",
-            consumerSecret: "xxxxxxxxxxxxxx",
+            consumerKey:    "xxxxxxxxxxxxxxxx",
+            consumerSecret: "xxxxxxxxxxxxxxxx",
             requestTokenUrl: "https://api.twitter.com/oauth/request_token",
             authorizeUrl:    "https://api.twitter.com/oauth/authorize",
             accessTokenUrl:  "https://api.twitter.com/oauth/access_token"
@@ -72,8 +109,8 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        // base64でencoding
-//        let originalString = "xxxxxxxxxxxxxxxxxxxxxxx"
+        // base64でencoding
+//        let originalString = "xxxxxxxxxxxxxx:xxxxxxxxxxxxxx"
 //        let originalData = originalString.data(using: .utf8)
 //        let encodedString = originalData?.base64EncodedString()
 //        print(encodedString!)

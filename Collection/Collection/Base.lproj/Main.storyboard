@@ -40,12 +40,20 @@
                                     <action selector="connectTwitterButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bYH-Rs-loV"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X93-1C-0Ti">
-                                <rect key="frame" x="366" y="654" width="37" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2TO-9Y-6yq">
+                                <rect key="frame" x="57" y="420" width="100" height="100"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Slack"/>
+                                <state key="normal" title="Button" image="Twitter_off.png"/>
                                 <connections>
-                                    <action selector="connectSlackButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="wn7-UU-NxR"/>
+                                    <action selector="button1:" destination="BYZ-38-t0r" eventType="touchUpInside" id="EQE-Eu-8Jx"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DQw-2L-tYJ">
+                                <rect key="frame" x="57" y="562" width="100" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button" image="Slack_off.png"/>
+                                <connections>
+                                    <action selector="button2:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7NJ-hr-rbd"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -58,6 +66,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="Ygn-XY-vEH"/>
                     <connections>
+                        <outlet property="button1" destination="2TO-9Y-6yq" id="nKW-pE-MDa"/>
+                        <outlet property="button2" destination="DQw-2L-tYJ" id="FQb-4I-SmB"/>
                         <outlet property="label" destination="jAM-kC-C7T" id="uk7-rO-o6O"/>
                         <outlet property="searchBar" destination="XEO-cF-Ie8" id="Ig4-as-Uq4"/>
                         <outlet property="searchDisplayController" destination="VLg-Gp-His" id="a9G-Kf-N7Z"/>
@@ -81,7 +91,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="1104.6875" y="25.78125"/>
+            <point key="canvasLocation" x="1110" y="-8"/>
         </scene>
         <!--Next View Controller-->
         <scene sceneID="gST-Sr-so1">
@@ -187,4 +197,9 @@
             <point key="canvasLocation" x="2098.4375" y="25.78125"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Slack_off.png" width="500" height="500"/>
+        <image name="Twitter_off.png" width="400" height="400"/>
+    </resources>
+    <color key="tintColor" red="1" green="0.36592798654259351" blue="0.40900783577449817" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
 </document>
