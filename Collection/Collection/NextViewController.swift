@@ -129,8 +129,8 @@ class NextViewController: UIViewController, UITableViewDelegate, UITableViewData
                     let results = dictionary["results"] as! [[String:Any]]
 //                    let texts = results["text"] as! String
                     for result in results {
-                        print("------------------------------------")
-                        print(result)
+//                        print("------------------------------------")
+//                        print(result)
 //                        print("Results: \(result)")
                         DispatchQueue.main.async() { () -> Void in
                             let userConf = result["user"] as! [String:Any]
@@ -190,7 +190,7 @@ class NextViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     // トークン取得のための関数
     func getToken() -> String {
-        let token: String = "xxxxx"
+        let token: String = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         return token
     }
     

@@ -51,45 +51,46 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate
 
     }
     let userDefaults = UserDefaults.standard
+    // tableViewのタグを用意
+    let tableTag = 27
     var tableView: UITableView!
     let statusBarHeight = UIApplication.shared.statusBarFrame.height
     var textFieldHeight: CGFloat = 40
     
     var str: String!
-    var oauthswift: OAuth1Swift?
+    var webView: WKWebView?
+    var oauthswift: OAuthSwift?
+    let consumerData:[String:String] =
+        ["consumerKey":"xxxxxxxxxxxxx", // コンシューマキー
+            "consumerSecret":"xxxxxxxxxxxxxx"] // コンシューマシークレット
     
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBAction func connectTwitterButton(_ sender: Any) {
-        // create an instance and retain it
+        doOAuthTwitter(consumerData)
+    }
+    // MARK: Twitter
+    func doOAuthTwitter(_ serviceParameters: [String:String]){
         let oauthswift = OAuth1Swift(
-            consumerKey:    "xxxxxxxxxxxxxxxx",
-            consumerSecret: "xxxxxxxxxxxxxxxx",
+            consumerKey:    serviceParameters["consumerKey"]!,
+            consumerSecret: serviceParameters["consumerSecret"]!,
             requestTokenUrl: "https://api.twitter.com/oauth/request_token",
             authorizeUrl:    "https://api.twitter.com/oauth/authorize",
             accessTokenUrl:  "https://api.twitter.com/oauth/access_token"
         )
-        
         self.oauthswift = oauthswift
-        
-        oauthswift.authorizeURLHandler = SafariURLHandler(viewController: self, oauthSwift: oauthswift)
-        
-        // authorize
-        let handle = oauthswift.authorize(
-            withCallbackURL: URL(string: "https://kagari.github.io/callback/twitter")!,
+        oauthswift.authorizeURLHandler = getURLHandler()
+        let _ = oauthswift.authorize(
+            withCallbackURL: URL(string: "https://oauth-callback")!,
             success: { credential, response, parameters in
-//                print(credential.oauthToken)
-//                print(credential.oauthTokenSecret)
-//                print(parameters["user_id"]!)
+                self.showTokenAlert(name: "Twitter", credential: credential)
                 self.testTwitter(oauthswift)
-                // Do your request
         },
             failure: { error in
-                print(error.localizedDescription)
+                print(error.description)
         }
         )
     }
-    
     func testTwitter(_ oauthswift: OAuth1Swift) {
         let _ = oauthswift.client.get(
             "https://api.twitter.com/1.1/statuses/mentions_timeline.json", parameters: [:],
@@ -101,6 +102,36 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate
         }
         )
     }
+    
+    func getURLHandler() -> OAuthSwiftURLHandlerType {
+        if #available(iOS 9.0, *) {
+            let handler = SafariURLHandler(viewController: self, oauthSwift: self.oauthswift!)
+            handler.presentCompletion = {
+                print("Safari presented")
+            }
+            handler.dismissCompletion = {
+                print("Safari dismissed")
+            }
+            return handler
+        }
+        return OAuthSwiftOpenURLExternally.sharedInstance
+    }
+    
+    func showTokenAlert(name: String?, credential: OAuthSwiftCredential) {
+        var message = "oauth_token:\(credential.oauthToken)"
+        if !credential.oauthTokenSecret.isEmpty {
+            message += "\n\noauth_token_secret:\(credential.oauthTokenSecret)"
+        }
+        self.showAlertView(title: name ?? "Service", message: message)
+        
+    }
+    
+    func showAlertView(title: String, message: String) {
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "Close", style: UIAlertAction.Style.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
 
     @IBAction func connectSlackButton(_ sender: Any) {
         // Slackの認証
@@ -110,43 +141,43 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate
         super.viewDidLoad()
         
         // base64でencoding
-//        let originalString = "xxxxxxxxxxxxxx:xxxxxxxxxxxxxx"
-//        let originalData = originalString.data(using: .utf8)
-//        let encodedString = originalData?.base64EncodedString()
-//        print(encodedString!)
-//
-//        let url = URL(string: "https://api.twitter.com/oauth2/token")
-//        var urlRequest = URLRequest(url: url!)
-//        urlRequest.httpMethod = "POST"
-//        urlRequest.allHTTPHeaderFields = ["Authorization": "Basic \(encodedString!)", "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"]
-//        urlRequest.httpBody = "grant_type=client_credentials".data(using: .utf8)
-//
-//        // TwitterのAPI認証をするためにBearerTokenを取得する
-//        let task = URLSession.shared.dataTask(with: urlRequest) {
-//            data, response, error in
-//
-//            if let error = error {
-//                print("クライアントエラー: \(error.localizedDescription) \n")
-//                return
-//            }
-//
-//            guard let data = data, let response = response as? HTTPURLResponse else {
-//                print("no data or no response")
-//                return
-//            }
-//
-//            if response.statusCode == 200 {
-//                let json = try? JSONSerialization.jsonObject(with: data)
-//                if let dictionary = json as? [String: Any]{
-//                    let token = dictionary["access_token"]
-//                    print("Bearer: \(token!)")
-//                    self.userDefaults.set(token!, forKey: "token")
-//                }
-//            } else {
-//                print("サーバエラー ステータスコード: \(response.statusCode)\n")
-//            }
-//        }
-//        task.resume()
+        let originalString = "xxxxxxxxxxxxxxxx:xxxxxxxxxxxxxxxxxxxxx"
+        let originalData = originalString.data(using: .utf8)
+        let encodedString = originalData?.base64EncodedString()
+        print(encodedString!)
+
+        let url = URL(string: "https://api.twitter.com/oauth2/token")
+        var urlRequest = URLRequest(url: url!)
+        urlRequest.httpMethod = "POST"
+        urlRequest.allHTTPHeaderFields = ["Authorization": "Basic \(encodedString!)", "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"]
+        urlRequest.httpBody = "grant_type=client_credentials".data(using: .utf8)
+
+        // TwitterのAPI認証をするためにBearerTokenを取得する
+        let task = URLSession.shared.dataTask(with: urlRequest) {
+            data, response, error in
+
+            if let error = error {
+                print("クライアントエラー: \(error.localizedDescription) \n")
+                return
+            }
+
+            guard let data = data, let response = response as? HTTPURLResponse else {
+                print("no data or no response")
+                return
+            }
+
+            if response.statusCode == 200 {
+                let json = try? JSONSerialization.jsonObject(with: data)
+                if let dictionary = json as? [String: Any]{
+                    let token = dictionary["access_token"]
+                    print("Bearer: \(token!)")
+                    self.userDefaults.set(token!, forKey: "token")
+                }
+            } else {
+                print("サーバエラー ステータスコード: \(response.statusCode)\n")
+            }
+        }
+        task.resume()
         
         // labelがこのアプリの名前を表している
         label.text = "Collection"
@@ -179,11 +210,23 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate
         }
     }
     
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.text = ""
+        //キーボードを閉じる
+        self.view.endEditing(true)
+        guard let fetchedTableView = self.view.viewWithTag(self.tableTag) else {
+            return
+        }
+        fetchedTableView.removeFromSuperview()
+    }
+    
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         tableView = UITableView(frame: CGRect(x: 0, y: self.searchBar.frame.maxY, width: self.view.frame.width, height: CGFloat(getInputHistory().count) * self.textFieldHeight))
         tableView.delegate = self
         tableView.dataSource = self
         tableView.allowsSelection = false
+        // タグをセット
+        self.tableView.tag = self.tableTag
         // データのないセルを表示しないようにする
         tableView.tableFooterView = UIView(frame: .zero)
         self.view.addSubview(tableView)
