@@ -129,7 +129,7 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             self.present(alert, animated: true)
         }else if Slack == false && Twitter == false{
-            let alert = UIAlertController(title: "検索結果がありませんでした", message: "検索したいアプリを選択してください", preferredStyle: .alert)
+            let alert = UIAlertController(title: "検索する対象が選択されていません", message: "検索したいアプリを選択してください", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             self.present(alert, animated: true)
         }else{
