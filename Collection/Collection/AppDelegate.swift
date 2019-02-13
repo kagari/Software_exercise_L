@@ -1,13 +1,4 @@
-//
-//  AppDelegate.swift
-//  Collection
-//
-//  Created by 大城昂希 on 2018/11/08.
-//  Copyright © 2018 大城昂希. All rights reserved.
-//
-
 import UIKit
-import OAuthSwift
 
 var Twitter:Bool = false
 var Slack:Bool = false
@@ -17,14 +8,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var message: String!
-
-
-    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey  : Any] = [:]) -> Bool {
-        if (url.host == "oauth-callback") {
-            OAuthSwift.handle(url: url)
-        }
-        return true
-    }
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

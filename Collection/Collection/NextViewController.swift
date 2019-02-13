@@ -1,11 +1,3 @@
-//
-//  NextViewController.swift
-//  Collection
-//
-//  Created by 大城昂希 on 2018/11/08.
-//  Copyright © 2018 大城昂希. All rights reserved.
-//
-
 import UIKit
 import SafariServices
 
@@ -40,117 +32,109 @@ class NextViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         //Slackがonだったら発動
         if Slack == true{
-        // 検索を行う
-        var url_text: String! = "https://slack.com/api/search.all?token=\(token)&query=\(query)"
-        url_text = url_text.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)
-        let url = URL(string: url_text)!
-        // slackAPIを叩く
-        let task = URLSession.shared.dataTask(with: url) {
-            data, response, error in
-            
-            if let error = error {
-                print("クライアントエラー: \(error.localizedDescription) \n")
-                return
-            }
-            
-            guard let data = data, let response = response as? HTTPURLResponse else {
-                print("no data or no response")
-                return
-            }
-            
-            if response.statusCode == 200 {
-                let str = String(data: data, encoding: .utf8)
+            // 検索を行う
+            var url_text: String! = "https://slack.com/api/search.all?token=\(token)&query=\(query)"
+            url_text = url_text.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)
+            let url = URL(string: url_text)!
+            // slackAPIを叩く
+            let task = URLSession.shared.dataTask(with: url) {
+                data, response, error in
+                
+                if let error = error {
+                    print("クライアントエラー: \(error.localizedDescription) \n")
+                    return
+                }
+                
+                guard let data = data, let response = response as? HTTPURLResponse else {
+                    print("no data or no response")
+                    return
+                }
+                
+                if response.statusCode == 200 {
+                    let str = String(data: data, encoding: .utf8)
 
-                guard let result = str?.data(using: .utf8) else {return}
-                do {
-                    let json = try? JSONSerialization.jsonObject(with: result)
-                    if let dictionary = json as? [String: Any]{
-                        // 正常にSlackAPIを使って情報を取れたか判断
-                        if dictionary["ok"] as! Bool {
-                            let apiMessage = dictionary["messages"] as! [String: Any]
-                            let matches = apiMessage["matches"] as! [Any]
-                            // 返ってきた結果(検索結果)が空かどうか判定
-                            // 空だった場合アラートを出す
-                            if matches.isEmpty {
-                                let alert = UIAlertController(title: "検索結果がありませんでした", message: "別の検索ワードで試してみてください", preferredStyle: .alert)
+                    guard let result = str?.data(using: .utf8) else {return}
+                    do {
+                        let json = try? JSONSerialization.jsonObject(with: result)
+                        if let dictionary = json as? [String: Any]{
+                            // 正常にSlackAPIを使って情報を取れたか判断
+                            if dictionary["ok"] as! Bool {
+                                let apiMessage = dictionary["messages"] as! [String: Any]
+                                let matches = apiMessage["matches"] as! [Any]
+                                // 返ってきた結果(検索結果)が空かどうか判定
+                                // 空だった場合アラートを出す
+                                if matches.isEmpty {
+                                    let alert = UIAlertController(title: "検索結果がありませんでした", message: "別の検索ワードで試してみてください", preferredStyle: .alert)
+                                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                                    self.present(alert, animated: true)
+                                }
+                                for matche in matches {
+                                    let texts = matche as! [String: Any]
+                                    DispatchQueue.main.async() { () -> Void in
+                                        var responseData = [String: Any]()
+                                        responseData["username"] = texts["username"]! as? String
+                                        responseData["text"] = texts["text"]! as? String
+                                        responseData["permalink"] = texts["permalink"]! as? String
+                                        self.resultDatas.append(responseData)
+                                    }
+                                }
+                            }else{
+                                // SlackAPIがうまく使えていない場合、アラートを出す
+                                let alert = UIAlertController(title: "Slackとの連携が行われていません", message: "連携を確認してもう一度お試しください", preferredStyle: .alert)
                                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                                 self.present(alert, animated: true)
                             }
-                            for matche in matches {
-                                let texts = matche as! [String: Any]
-                                // mainthreaddで実行(これを書かないと怒られる)
-                                DispatchQueue.main.async() { () -> Void in
-                                    var responseData = [String: Any]()
-                                    responseData["username"] = texts["username"]! as? String
-                                    responseData["text"] = texts["text"]! as? String
-                                    responseData["permalink"] = texts["permalink"]! as? String
-                                    self.resultDatas.append(responseData)
-                                }
-                            }
-                        }else{
-                            // SlackAPIがうまく使えていない場合、アラートを出す
-                            let alert = UIAlertController(title: "Slackとの連携が行われていません", message: "連携を確認してもう一度お試しください", preferredStyle: .alert)
-                            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                            self.present(alert, animated: true)
                         }
                     }
+                } else {
+                    print("サーバエラー ステータスコード: \(response.statusCode)\n")
                 }
-            } else {
-                print("サーバエラー ステータスコード: \(response.statusCode)\n")
             }
-        }
-        task.resume()
+            task.resume()
         }
         
         
         // TwitterのAPIを使用して検索を行う
         // Twitterがonだったら発動
         if Twitter == true{
-        let twitterURL = URL(string: "https://api.twitter.com/1.1/tweets/search/fullarchive/prod.json")
-        var twitterURLRequest = URLRequest(url: twitterURL!)
-        twitterURLRequest.httpMethod = "POST"
-        twitterURLRequest.httpBody = "{\"query\" : \"\(query)\"}".data(using: .utf8)
-        if let token = userDefaults.string(forKey: "token"){
-            twitterURLRequest.allHTTPHeaderFields = ["Authorization": "Bearer \(token)", "lang": "ja"]
-        }
-        let twitterTask = URLSession.shared.dataTask(with: twitterURLRequest) {
-            data, response, error in
-            if let error = error {
-                print("クライアントエラー: \(error.localizedDescription) \n")
-                return
+            let twitterURL = URL(string: "https://api.twitter.com/1.1/tweets/search/fullarchive/prod.json")
+            var twitterURLRequest = URLRequest(url: twitterURL!)
+            twitterURLRequest.httpMethod = "POST"
+            twitterURLRequest.httpBody = "{\"query\" : \"\(query)\"}".data(using: .utf8)
+            if let token = userDefaults.string(forKey: "token"){
+                twitterURLRequest.allHTTPHeaderFields = ["Authorization": "Bearer \(token)", "lang": "ja"]
             }
-            guard let data = data, let response = response as? HTTPURLResponse else {
-                print("no data or no response")
-                return
-            }
-            if response.statusCode == 200 {
-                let json = try? JSONSerialization.jsonObject(with: data)
-                if let dictionary = json as? [String: Any]{
-                    let results = dictionary["results"] as! [[String:Any]]
-//                    let texts = results["text"] as! String
-                    for result in results {
-//                        print("------------------------------------")
-//                        print(result)
-//                        print("Results: \(result)")
-                        DispatchQueue.main.async() { () -> Void in
-                            let userConf = result["user"] as! [String:Any]
-//                            let entities = result["entities"] as! [String:Any]
-//                            let urls = entities["urls"] as! [String:Any]
-                            let url = "https://twitter.com/i/web/status/\(result["id"]!)"
-//                            print("@\(userConf["screen_name"]!)")
-                            var responseData = [String: Any]()
-                            responseData["username"] = "@\(userConf["screen_name"]!)"
-                            responseData["text"] = result["text"] as! String
-                            responseData["permalink"] = url
-                            self.resultDatas.append(responseData)
+            let twitterTask = URLSession.shared.dataTask(with: twitterURLRequest) {
+                data, response, error in
+                if let error = error {
+                    print("クライアントエラー: \(error.localizedDescription) \n")
+                    return
+                }
+                guard let data = data, let response = response as? HTTPURLResponse else {
+                    print("no data or no response")
+                    return
+                }
+                if response.statusCode == 200 {
+                    let json = try? JSONSerialization.jsonObject(with: data)
+                    if let dictionary = json as? [String: Any]{
+                        let results = dictionary["results"] as! [[String:Any]]
+                        for result in results {
+                            DispatchQueue.main.async() { () -> Void in
+                                let userConf = result["user"] as! [String:Any]
+                                let url = "https://twitter.com/i/web/status/\(result["id"]!)"
+                                var responseData = [String: Any]()
+                                responseData["username"] = "@\(userConf["screen_name"]!)"
+                                responseData["text"] = result["text"] as! String
+                                responseData["permalink"] = url
+                                self.resultDatas.append(responseData)
+                            }
                         }
                     }
+                }else{
+                    print("サーバエラー ステータスコード: \(response.statusCode)\n")
                 }
-            }else{
-                print("サーバエラー ステータスコード: \(response.statusCode)\n")
             }
-        }
-        twitterTask.resume()
+            twitterTask.resume()
         }
         
         gradation_color()

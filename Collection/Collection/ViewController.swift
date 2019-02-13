@@ -1,14 +1,5 @@
-//
-//  ViewController.swift
-//  Collection
-//
-//  Created by 大城昂希 on 2018/11/08.
-//  Copyright © 2018 大城昂希. All rights reserved.
-//
-
 import UIKit
 import WebKit
-import OAuthSwift
 
 class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource ,UITextViewDelegate, UIApplicationDelegate {
 
@@ -18,9 +9,6 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate
     let image1:UIImage = UIImage(named:"Twitter_on")!
     let image2:UIImage = UIImage(named:"Slack_off")!
     let image3:UIImage = UIImage(named:"Slack_on")!
-//    var Twitter: Bool = false
-//    var Slack: Bool = false
-
     
     var count1 = 0
     var count2 = 0
@@ -59,89 +47,18 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate
     
     var str: String!
     var webView: WKWebView?
-    var oauthswift: OAuthSwift?
     let consumerData:[String:String] =
-        ["consumerKey":"xxxxxxxxxxxxx", // コンシューマキー
-            "consumerSecret":"xxxxxxxxxxxxxx"] // コンシューマシークレット
+        ["consumerKey":"xxxxxxxxxxxxxxxx", // コンシューマキー
+            "consumerSecret":"xxxxxxxxxxxxxxxxxxxxx"] // コンシューマシークレット
     
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var searchBar: UISearchBar!
-    @IBAction func connectTwitterButton(_ sender: Any) {
-        doOAuthTwitter(consumerData)
-    }
-    // MARK: Twitter
-    func doOAuthTwitter(_ serviceParameters: [String:String]){
-        let oauthswift = OAuth1Swift(
-            consumerKey:    serviceParameters["consumerKey"]!,
-            consumerSecret: serviceParameters["consumerSecret"]!,
-            requestTokenUrl: "https://api.twitter.com/oauth/request_token",
-            authorizeUrl:    "https://api.twitter.com/oauth/authorize",
-            accessTokenUrl:  "https://api.twitter.com/oauth/access_token"
-        )
-        self.oauthswift = oauthswift
-        oauthswift.authorizeURLHandler = getURLHandler()
-        let _ = oauthswift.authorize(
-            withCallbackURL: URL(string: "https://oauth-callback")!,
-            success: { credential, response, parameters in
-                self.showTokenAlert(name: "Twitter", credential: credential)
-                self.testTwitter(oauthswift)
-        },
-            failure: { error in
-                print(error.description)
-        }
-        )
-    }
-    func testTwitter(_ oauthswift: OAuth1Swift) {
-        let _ = oauthswift.client.get(
-            "https://api.twitter.com/1.1/statuses/mentions_timeline.json", parameters: [:],
-            success: { response in
-                let jsonDict = try? response.jsonObject()
-                print(String(describing: jsonDict))
-        }, failure: { error in
-            print(error)
-        }
-        )
-    }
-    
-    func getURLHandler() -> OAuthSwiftURLHandlerType {
-        if #available(iOS 9.0, *) {
-            let handler = SafariURLHandler(viewController: self, oauthSwift: self.oauthswift!)
-            handler.presentCompletion = {
-                print("Safari presented")
-            }
-            handler.dismissCompletion = {
-                print("Safari dismissed")
-            }
-            return handler
-        }
-        return OAuthSwiftOpenURLExternally.sharedInstance
-    }
-    
-    func showTokenAlert(name: String?, credential: OAuthSwiftCredential) {
-        var message = "oauth_token:\(credential.oauthToken)"
-        if !credential.oauthTokenSecret.isEmpty {
-            message += "\n\noauth_token_secret:\(credential.oauthTokenSecret)"
-        }
-        self.showAlertView(title: name ?? "Service", message: message)
-        
-    }
-    
-    func showAlertView(title: String, message: String) {
-        
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
-        alert.addAction(UIAlertAction(title: "Close", style: UIAlertAction.Style.default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
-    }
 
-    @IBAction func connectSlackButton(_ sender: Any) {
-        // Slackの認証
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // base64でencoding
-        let originalString = "xxxxxxxxxxxxxxxx:xxxxxxxxxxxxxxxxxxxxx"
+        let originalString = "\(consumerData["consumerKey"]!):\(consumerData["consumerSecret"]!)"
         let originalData = originalString.data(using: .utf8)
         let encodedString = originalData?.base64EncodedString()
         print(encodedString!)
@@ -192,7 +109,6 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate
         
         //グラデーションをつける
         gradationColor()
-        
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
