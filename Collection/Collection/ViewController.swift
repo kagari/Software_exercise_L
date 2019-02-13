@@ -1,29 +1,64 @@
-//
-//  ViewController.swift
-//  Collection
-//
-//  Created by 大城昂希 on 2018/11/08.
-//  Copyright © 2018 大城昂希. All rights reserved.
-//
-
 import UIKit
+import WebKit
 
-class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
+class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource ,UITextViewDelegate, UIApplicationDelegate {
+
+    @IBOutlet weak var button1: UIButton!
+    @IBOutlet weak var button2: UIButton!
+    let image0:UIImage = UIImage(named:"Twitter_off")!
+    let image1:UIImage = UIImage(named:"Twitter_on")!
+    let image2:UIImage = UIImage(named:"Slack_off")!
+    let image3:UIImage = UIImage(named:"Slack_on")!
     
+    var count1 = 0
+    var count2 = 0
+
+    @IBAction func button1(_ sender: Any) {
+        count1 += 1
+        if(count1%2 == 0){
+            button1.setImage(image0, for: .normal)
+            Twitter = false
+        }
+        else if(count1%2 == 1){
+            button1.setImage(image1, for: .normal)
+            Twitter = true
+        }
+
+    }
+    
+    @IBAction func button2(_ sender: Any) {
+        count2 += 1
+        if(count2%2 == 0){
+            button2.setImage(image2, for: .normal)
+            Slack = false
+        }
+        else if(count2%2 == 1){
+            button2.setImage(image3, for: .normal)
+            Slack = true
+        }
+
+    }
     let userDefaults = UserDefaults.standard
+    // tableViewのタグを用意
+    let tableTag = 27
     var tableView: UITableView!
     let statusBarHeight = UIApplication.shared.statusBarFrame.height
     var textFieldHeight: CGFloat = 40
     
     var str: String!
+    var webView: WKWebView?
+    let consumerData:[String:String] =
+        ["consumerKey":"xxxxxxxxxxxxxxxx", // コンシューマキー
+            "consumerSecret":"xxxxxxxxxxxxxxxxxxxxx"] // コンシューマシークレット
+    
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var searchBar: UISearchBar!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // base64でencoding
-        let originalString = "xxxxxxxxxxxxxxxxxxxxxxx"
+        let originalString = "\(consumerData["consumerKey"]!):\(consumerData["consumerSecret"]!)"
         let originalData = originalString.data(using: .utf8)
         let encodedString = originalData?.base64EncodedString()
         print(encodedString!)
@@ -74,7 +109,6 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate
         
         //グラデーションをつける
         gradationColor()
-        
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -87,9 +121,23 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate
             let alert = UIAlertController(title: "検索文字が入力されていません", message: "入力してください", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             self.present(alert, animated: true)
+        }else if Slack == false && Twitter == false{
+            let alert = UIAlertController(title: "検索する対象が選択されていません", message: "検索したいアプリを選択してください", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true)
         }else{
             goToNextPage(message: searchBar.text!)
         }
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.text = ""
+        //キーボードを閉じる
+        self.view.endEditing(true)
+        guard let fetchedTableView = self.view.viewWithTag(self.tableTag) else {
+            return
+        }
+        fetchedTableView.removeFromSuperview()
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
@@ -97,6 +145,8 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate
         tableView.delegate = self
         tableView.dataSource = self
         tableView.allowsSelection = false
+        // タグをセット
+        self.tableView.tag = self.tableTag
         // データのないセルを表示しないようにする
         tableView.tableFooterView = UIView(frame: .zero)
         self.view.addSubview(tableView)
@@ -205,14 +255,6 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate
         //上が白で下が水色
         gradientLayer.startPoint = CGPoint.init(x: 0.5, y: 0)
         gradientLayer.endPoint = CGPoint.init(x: 0.5 , y:1 )
-        
-        //左が白で右が水色
-        //gradientLayer.startPoint = CGPoint.init(x: 0, y: 0.5)
-        //gradientLayer.endPoint = CGPoint.init(x: 1 , y:0.5)
-        
-        //左上が白で右下が水色
-        // gradientLayer.startPoint = CGPoint.init(x: 0, y: 0)
-        //gradientLayer.endPoint = CGPoint.init(x: 1 , y:1)
         
         //ViewControllerのViewレイヤーにグラデーションレイヤーを挿入する
         self.view.layer.insertSublayer(gradientLayer,at:0)

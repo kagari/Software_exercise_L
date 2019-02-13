@@ -1,24 +1,13 @@
-//
-//  AppDelegate.swift
-//  Collection
-//
-//  Created by 大城昂希 on 2018/11/08.
-//  Copyright © 2018 大城昂希. All rights reserved.
-//
-
 import UIKit
+
+var Twitter:Bool = false
+var Slack:Bool = false
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var message: String!
-
-
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
-        return true
-    }
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -40,6 +29,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    
+    private func applicationDidFinishLaunching(_ aNotification: Notification) {
     }
 
 
